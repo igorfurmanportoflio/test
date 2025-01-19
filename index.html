@@ -384,19 +384,19 @@ this.initGyroscope();
                 this.renderer.setSize(width, height);
             }
             initGyroscope() {
-    if (window.DeviceOrientationEvent) {
-        window.addEventListener('deviceorientation', (event) => {
+       if (window.DeviceMotionEvent) {
+        window.addEventListener('devicemotion', (event) => {
             if (!this.gyroEnabled) {
                 this.gyroEnabled = true;
             }
             
-            // Konwertuj kąty nachylenia na wartości dla efektu
-            const x = (event.gamma || 0) / 45; // Przechylenie na boki
-            const y = (event.beta || 0) / 45;  // Przechylenie przód-tył
+           // Używamy akcelerometru zamiast żyroskopu
+            const x = (event.accelerationIncludingGravity.x || 0) / 5;
+            const y = (event.accelerationIncludingGravity.y || 0) / 5;
             
-            // Ograniczenie wartości do zakresu -1 do 1
-            this.mouse.x = Math.max(-1, Math.min(1, x));
-            this.mouse.y = Math.max(-1, Math.min(1, -y));
+             // Płynniejsze przejścia
+            this.mouse.x += (Math.max(-1, Math.min(1, x)) - this.mouse.x) * 0.1;
+            this.mouse.y += (Math.max(-1, Math.min(1, y)) - this.mouse.y) * 0.1;
         });
     }
 }
