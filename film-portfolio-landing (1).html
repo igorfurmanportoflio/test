@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Film Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+            background: #000;
+            color: white;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader-content {
+            text-align: center;
+        }
+
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(226,133,224,0.3);
+            border-top: 3px solid rgba(226,133,224,1);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #clouds-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            touch-action: none;
+        }
+
+        .content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 2;
+            width: 90%;
+            max-width: 800px;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards 0.5s;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -40%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .title {
+            font-size: 5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(226,133,224,0.5);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideUp 0.8s ease forwards 0.8s;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            margin-top: 1rem;
+            color: rgba(255,255,255,0.8);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideUp 0.8s ease forwards 1s;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2rem;
+            padding: 12px 24px;
+            min-width: 160px;
+            min-height: 44px;
+            background-color: rgba(226,133,224,0.2);
+            color: #ffffff;
+            text-decoration: none;
+            border: 2px solid rgba(226,133,224,0.5);
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideUp 0.8s ease forwards 1.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: rgba(226,133,224,0.2);
+            transition: transform 0.5s ease;
+            transform: translate(-50%, -50%) rotate(45deg) scale(0);
+            z-index: -1;
+        }
+
+        .cta-button:hover {
+            background-color: rgba(226,133,224,0.1);
+            border-color: rgba(226,133,224,1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(226,133,224,0.3);
+        }
+
+        .cta-button:hover::before {
+            transform: translate(-50%, -50%) rotate(45deg) scale(1);
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+                letter-spacing: 3px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                padding: 0 20px;
+            }
+
+            .cta-button {
+                padding: 12px 24px;
+                font-size: 1rem;
+                margin-top: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 2rem;
+                letter-spacing: 2px;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .cta-button {
+                padding: 10px 20px;
+            }
+        }
+
+        @media (max-height: 480px) and (orientation: landscape) {
+            .title {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 0.9rem;
+                margin-top: 0.5rem;
+            }
+
+            .cta-button {
+                margin-top: 1rem;
+            }
+        }
+    </style>
+</head><body>
+    <div class="loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <p>Ładowanie...</p>
+        </div>
+    </div>
+
+    <canvas id="clouds-canvas"></canvas>
+    <div class="content">
+        <h1 class="title">Film Portfolio</h1>
+        <p class="subtitle">Tworzę wyjątkowe historie poprzez obraz</p>
+        <a href="stylish.html" class="cta-button">Zobacz Projekty</a>
+    </div>
+
+    <script type="module">
+        import * as THREE from 'https://unpkg.com/three@0.159.0/build/three.module.js';
+
+        const vertexShader = `
+            varying vec2 vUv;
+            void main() {
+                vUv = uv;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+        `;
+
+        const fragmentShader = `
+            uniform vec2 uMouse;
+            uniform float uTime;
+            varying vec2 vUv;
+
+            float random(vec2 st) {
+                return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
+            }
+
+            float smoothNoise(vec2 st) {
+                vec2 i = floor(st);
+                vec2 f = fract(st);
+                
+                float a = random(i);
+                float b = random(i + vec2(1.0, 0.0));
+                float c = random(i + vec2(0.0, 1.0));
+                float d = random(i + vec2(1.0, 1.0));
+
+                vec2 u = f * f * (3.0 - 2.0 * f);
+                return mix(a, b, u.x) +
+                        (c - a)* u.y * (1.0 - u.x) +
+                        (d - b) * u.x * u.y;
+            }
+
+            float fbm(vec2 x) {
+                float v = 0.0;
+                float a = 0.5;
+                vec2 shift = vec2(100.0);
+                mat2 rot = mat2(cos(0.5), sin(0.5), 
+                                -sin(0.5), cos(0.50));
+                for (int i = 0; i < 6; ++i) {
+                    v += a * smoothNoise(x);
+                    x = rot * x * 2.0 + shift;
+                    a *= 0.5;
+                }
+                return v;
+            }
+
+            void main() {
+                vec2 uv = vUv;
+                vec2 mouse = uMouse * 0.05;
+                uv += mouse;
+                
+                float time = uTime * 0.1;
+                vec2 movement = vec2(time * 0.1, time * 0.05);
+                
+                vec2 q = vec2(0.0);
+                q.x = fbm(uv + movement);
+                q.y = fbm(uv + vec2(1.0));
+
+                vec2 r = vec2(0.0);
+                r.x = fbm(uv + 1.0 * q + vec2(1.7, 9.2) + 0.15 * time);
+                r.y = fbm(uv + 1.0 * q + vec2(8.3, 2.8) + 0.126 * time);
+
+                float f = fbm(uv + r);
+                
+                vec3 cloudColor = vec3(0.14, 0.12, 0.18);
+                vec3 accentColor = vec3(0.88, 0.53, 0.88);
+                
+                vec3 finalColor = mix(
+                    cloudColor, 
+                    accentColor, 
+                    smoothstep(0.3, 0.8, f)
+                );
+                
+                float opacity = smoothstep(0.3, 0.8, f);
+                gl_FragColor = vec4(finalColor, opacity * 0.8);
+            }
+        `;
+
+        class CloudEffect {
+            constructor() {
+                this.scene = new THREE.Scene();
+                this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+                this.renderer = new THREE.WebGLRenderer({
+                    canvas: document.getElementById('clouds-canvas'),
+                    antialias: true
+                });
+
+                this.mouse = new THREE.Vector2(0, 0);
+                this.time = 0;
+                this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+                this.gyroEnabled = false;
+this.initGyroscope();
+
+                if (this.isMobile) {
+                    this.renderer.setPixelRatio(1);
+                }
+
+                this.init();
+                this.animate();
+                this.addEventListeners();
+            }
+
+            async init() {
+                const geometry = new THREE.PlaneGeometry(2, 2);
+                this.material = new THREE.ShaderMaterial({
+                    uniforms: {
+                        uMouse: { value: this.mouse },
+                        uTime: { value: 0 }
+                    },
+                    vertexShader,
+                    fragmentShader
+                });
+
+                const mesh = new THREE.Mesh(geometry, this.material);
+                this.scene.add(mesh);
+
+                this.resize();
+            }
+
+            addEventListeners() {
+                window.addEventListener('resize', this.resize.bind(this));
+                
+                if (this.isMobile) {
+                    window.addEventListener('touchmove', this.onTouchMove.bind(this));
+                    window.addEventListener('touchstart', this.onTouchMove.bind(this));
+                } else {
+                    window.addEventListener('mousemove', this.onMouseMove.bind(this));
+                }
+            }
+
+            onMouseMove(event) {
+                this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+                this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            }
+
+            onTouchMove(event) {
+                const touch = event.touches[0];
+                this.mouse.x = (touch.clientX / window.innerWidth) * 2 - 1;
+                this.mouse.y = -(touch.clientY / window.innerHeight) * 2 + 1;
+            }
+
+            resize() {
+                const { innerWidth: width, innerHeight: height } = window;
+                this.renderer.setSize(width, height);
+            }
+            initGyroscope() {
+    if (window.DeviceOrientationEvent) {
+        window.addEventListener('deviceorientation', (event) => {
+            if (!this.gyroEnabled) {
+                this.gyroEnabled = true;
+            }
+            
+            // Konwertuj kąty nachylenia na wartości dla efektu
+            const x = (event.gamma || 0) / 45; // Przechylenie na boki
+            const y = (event.beta || 0) / 45;  // Przechylenie przód-tył
+            
+            // Ograniczenie wartości do zakresu -1 do 1
+            this.mouse.x = Math.max(-1, Math.min(1, x));
+            this.mouse.y = Math.max(-1, Math.min(1, -y));
+        });
+    }
+}
+
+            animate() {
+                requestAnimationFrame(this.animate.bind(this));
+                
+                const timeIncrement = this.isMobile ? 0.005 : 0.01;
+                this.time += timeIncrement;
+                
+                this.material.uniforms.uTime.value = this.time;
+                this.material.uniforms.uMouse.value = this.mouse;
+                
+                this.renderer.render(this.scene, this.camera);
+            }
+        }
+
+        // Initialize CloudEffect and handle loader
+        window.addEventListener('load', () => {
+            new CloudEffect();
+            setTimeout(() => {
+                document.querySelector('.loader').classList.add('hidden');
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
