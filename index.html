@@ -289,14 +289,14 @@
 
     float fbm(vec2 x) {
         float v = 0.0;
-        float a = 0.5;
+        float a = 0.7; // Zwiększone z 0.5 dla większych chmur
         vec2 shift = vec2(100.0);
         mat2 rot = mat2(cos(0.5), sin(0.5), 
                         -sin(0.5), cos(0.50));
-        for (int i = 0; i < 6; ++i) {
-            v += a * smoothNoise(x);
-            x = rot * x * 2.0 + shift;
-            a *= 0.5;
+        for (int i = 0; i < 4; ++i) { // Zmniejszone z 6 do 4 iteracji
+            v += a * smoothNoise(x * 0.8); // Dodane skalowanie 0.8 dla większych chmur
+            x = rot * x * 1.8 + shift; // Zmniejszone z 2.0 do 1.8
+            a *= 0.6; // Zwiększone z 0.5
         }
         return v;
     }
@@ -304,34 +304,26 @@
     void main() {
         vec2 uv = vUv;
         
-        // Dostosowanie UV dla urządzeń mobilnych
         if (uAspect < 1.0) {
-            // Obrót UV o 90 stopni
             uv = vec2(uv.y, 1.0 - uv.x);
-            
-            // Skalowanie
-            float scale = 1.5;
+            float scale = 1.8; // Zwiększone skalowanie
             uv = (uv - 0.5) * scale + 0.5;
         }
         
-        // Dostosowanie szerokości UV względem aspect ratio
         uv.x *= uAspect;
         
-        // Interakcja z myszką/dotykiem
         vec2 mouse = uMouse * 0.08;
         if (uAspect < 1.0) {
-            mouse = mouse.yx; // Zamiana współrzędnych dla urządzeń mobilnych
+            mouse = mouse.yx;
         }
         uv += mouse;
         
-        // Dostosowanie prędkości i kierunku ruchu
         float time = uTime * 0.1;
         vec2 movement;
         if (uAspect < 1.0) {
-            // Ruch poziomy dla urządzeń mobilnych
-            movement = vec2(time * 0.12, 0.0);
+            movement = vec2(time * 0.08, 0.0);
         } else {
-            movement = vec2(time * 0.12, time * 0.05);
+            movement = vec2(time * 0.08, time * 0.03);
         }
         
         vec2 q = vec2(0.0);
@@ -351,13 +343,13 @@
         vec3 finalColor = mix(
             cloudColor, 
             bgColor, 
-            smoothstep(0.4, 0.8, f)
+            smoothstep(0.3, 0.9, f) // Zwiększony zakres dla mniejszej ilości chmur
         );
         
-        float glow = smoothstep(0.4, 0.8, f);
+        float glow = smoothstep(0.3, 0.9, f);
         finalColor += cloudColor * glow * 0.2;
         
-        float opacity = smoothstep(0.3, 0.7, f);
+        float opacity = smoothstep(0.2, 0.8, f); // Dostosowany zakres przezroczystości
         
         gl_FragColor = vec4(finalColor, opacity * 0.9);
     }
