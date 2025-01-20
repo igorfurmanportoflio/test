@@ -2,17 +2,13 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Film Portfolio</title>
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap"></noscript>
-    
-    <!-- Defer non-critical scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
-    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <style>
-         :root {
+        :root {
             --primary-color: #252525;
             --accent-color: #e285e0;
             --text-color: #ffffff;
@@ -20,20 +16,54 @@
         }
 
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--primary-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            overflow-x: hidden;
-            touch-action: manipulation; /* Improve touch responsiveness */
-        }
+body {
+    cursor: none;
+}
+
+.custom-cursor {
+    width: 20px;
+    height: 20px;
+    background: rgba(226,133,224,0.8);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s;
+    mix-blend-mode: screen;
+}
+
+.cursor-glow {
+    width: 40px;
+    height: 40px;
+    background: radial-gradient(circle at center,
+        rgba(226,133,224,0.3) 0%,
+        rgba(226,133,224,0) 70%);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.1s ease;
+}
+
+.hoverable:hover ~ .custom-cursor {
+    width: 30px;
+    height: 30px;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
         .overlay-scroll {
     position: fixed;
     bottom: 0;
@@ -182,9 +212,19 @@
 
         /* Portfolio Sections */
         .portfolio-section {
-            padding: 120px 4vw;
-            background: var(--secondary-color);
-        }
+    position: relative;
+    z-index: 2;
+    background: var(--secondary-color);
+    margin: 60px 0;
+    padding: 0 4vw;
+}
+
+.portfolio-container {
+    position: relative;
+    z-index: 2;
+    background: var(--secondary-color);
+    min-height: 100vh;
+}
 
         .section-title {
             font-size: 3.5rem;
@@ -321,12 +361,6 @@
             z-index: -1;
         }
 
-        .parallax-wrapper {
-            position: relative;
-            height: 100vh;
-            overflow: hidden;
-        }
-
         /* Responsive Design */
         @media (max-width: 1400px) {
             .selected-works, .reels-grid {
@@ -344,6 +378,26 @@
         }
 
         @media (max-width: 768px) {
+            .parallax-wrapper {
+        height: 100vh;
+        position: sticky;
+        top: 0;
+    }
+    
+    .portfolio-section {
+        margin: 30px 0;
+        padding: 0 15px;
+    }
+    
+    .portfolio-container {
+        padding-top: 100vh;
+    }
+    
+    .hero-content {
+        position: fixed;
+        top: 50%;
+        transform: translateY(-50%);
+    }
             .hamburger {
                 display: flex;
             }
@@ -386,10 +440,6 @@
                 margin-bottom: 2rem;
             }
 
-            .portfolio-section {
-                padding: 60px 2vw;
-            }
-
             .selected-works, .reels-grid {
                 grid-template-columns: repeat(2, 1fr);
                 padding: 0 15px;
@@ -397,83 +447,35 @@
         }
 
         @media (max-width: 480px) {
-            /* More aggressive font size reduction */
-            .hero-title {
-                font-size: 2.5rem;
-                letter-spacing: 2px;
-            }
-
-            .hero-subtitle {
-                font-size: 1.2rem;
-            }
-
-            .section-title {
-                font-size: 1.8rem;
-            }
-
-            .project-description h3 {
-                font-size: 2rem;
-            }
-
-            .project-description p {
-                font-size: 1rem;
-            }
-
-            /* Improve touch targets */
-            .nav-links a, .hamburger {
-                min-height: 48px;
-                min-width: 48px;
-            }
-
-            /* Reduce padding and margins */
-            .portfolio-section {
-                padding: 30px 15px;
-            }
-
-            .major-project {
-                margin-bottom: 80px;
-                padding: 20px;
-            }
-
-            .project-main-image {
-                height: 250px;
-            }
-
-            /* Improve grid layouts for smaller screens */
-            .project-examples,
-            .selected-works,
-            .reels-grid {
+            .project-examples {
                 grid-template-columns: 1fr;
-                gap: 15px;
+            }
+            .selected-works, .reels-grid {
+                grid-template-columns: 1fr;
+            }
+            .portfolio-section {
+                padding: 40px 15px;
+            }
+            .project-main-image {
+                height: 300px;
             }
         }
-        @media (hover: hover) {
-            .portfolio-item:hover img {
-                transform: scale(1.1);
-            }
-        }
-
-        /* Reduce motion for users who prefer it */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation: none !important;
-                transition: none !important;
-            }
-
-            .parallax-bg {
-                transform: none !important;
-            }
-        }
+        @supports (-webkit-touch-callout: none) {
+    html {
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+    }
+}
     </style>
 </head>
 <body>
-    <button class="hamburger" aria-label="Toggle navigation menu">
+    <button class="hamburger">
         <span></span>
         <span></span>
         <span></span>
     </button>
 
-    <nav class="navbar" aria-label="Main Navigation">
+    <nav class="navbar">
         <div class="nav-links">
             <a href="#home">Home</a>
             <a href="#major-projects">WIĘKSZE PROJEKTY</a>
@@ -483,7 +485,7 @@
     </nav>
 
     <section id="home" class="parallax-wrapper">
-        <canvas id="clouds-canvas" aria-hidden="true"></canvas>
+        <canvas id="clouds-canvas"></canvas>
         <div class="hero-content">
             <h1 class="hero-title">Film Portfolio</h1>
             <p class="hero-subtitle">Tworzę wyjątkowe historie poprzez obraz</p>
@@ -491,7 +493,8 @@
         <div class="overlay-scroll"></div> 
     </section>
 
-    <section id="major-projects" class="portfolio-section">
+    <div class="portfolio-container">
+        <section id="major-projects" class="portfolio-section">
         <h2 class="section-title">WIĘKSZE PROJEKTY</h2>
         <div class="major-project">
             <div class="major-project-header">
@@ -635,71 +638,8 @@
             });
         });
     </script>
-    <script>
-        // Existing scripts with mobile optimizations
-        document.addEventListener('DOMContentLoaded', () => {
-            // Lazy load and performance optimization
-            if ('IntersectionObserver' in window) {
-                const images = document.querySelectorAll('.portfolio-item img');
-                const imageObserver = new IntersectionObserver((entries, observer) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const img = entry.target;
-                            img.src = img.dataset.src || img.src;
-                            observer.unobserve(img);
-                        }
-                    });
-                }, { rootMargin: '50px' });
-
-                images.forEach(img => imageObserver.observe(img));
-            }
-
-            // Existing GSAP and navigation scripts
-            gsap.registerPlugin(ScrollTrigger);
-
-            // Mobile-friendly scroll and animation adjustments
-            const isMobile = window.innerWidth <= 768;
-            
-            if (isMobile) {
-                // Reduce parallax effect on mobile
-                gsap.to('.parallax-bg', {
-                    y: '10%',
-                    ease: 'none',
-                    scrollTrigger: {
-                        trigger: '.parallax-wrapper',
-                        start: 'top top',
-                        end: 'bottom top',
-                        scrub: 0.5
-                    }
-                });
-            } else {
-                // Full parallax for desktop
-                gsap.to('.parallax-bg', {
-                    y: '30%',
-                    ease: 'none',
-                    scrollTrigger: {
-                        trigger: '.parallax-wrapper',
-                        start: 'top top',
-                        end: 'bottom top',
-                        scrub: true
-                    }
-                });
-            }
-
-            // Existing hamburger menu and navigation scripts
-        });
-
-        // Performance optimization: Add passive event listeners
-        window.addEventListener('scroll', () => {
-            const scrollPosition = window.scrollY;
-            const overlay = document.querySelector('.overlay-scroll');
-            const opacity = Math.min(scrollPosition / window.innerHeight, 1);
-            overlay.style.opacity = opacity;
-        }, { passive: true });
-    </script>
-</body>
-<script type="module">
-        import * as THREE from 'https://unpkg.com/three@0.159.0/build/three.module.js';
+</body><script type="module">
+    import * as THREE from 'https://unpkg.com/three@0.159.0/build/three.module.js';
 
     const vertexShader = `
         varying vec2 vUv;
@@ -780,23 +720,22 @@
     `;
 
     class CloudEffect {
-            constructor() {
-                this.scene = new THREE.Scene();
-                this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-                this.renderer = new THREE.WebGLRenderer({
-                    canvas: document.getElementById('clouds-canvas'),
-                    alpha: true,
-                    powerPreference: 'low-power' // Optimize for mobile
-                });
+        constructor() {
+            this.scene = new THREE.Scene();
+            this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+            this.renderer = new THREE.WebGLRenderer({
+                canvas: document.getElementById('clouds-canvas'),
+                alpha: true
+            });
 
-                this.mouse = new THREE.Vector2(0, 0);
-                this.time = 0;
-                this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            this.mouse = new THREE.Vector2(0, 0);
+            this.time = 0;
+            this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-                this.init();
-                this.animate();
-                this.addEventListeners();
-            }
+            this.init();
+            this.animate();
+            this.addEventListeners();
+        }
 
         async init() {
             const geometry = new THREE.PlaneGeometry(2, 2);
@@ -863,9 +802,6 @@
     const opacity = Math.min(scrollPosition / window.innerHeight, 1);
     overlay.style.opacity = opacity;
 });
-if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            new CloudEffect();
-        }
-    </script>
+</script>
 </body>
 </html>
