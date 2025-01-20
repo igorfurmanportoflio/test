@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Film Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        .theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.theme-button {
+    background: rgba(226,133,224,0.1);
+    border: 2px solid rgba(226,133,224,0.5);
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #e285e0;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.theme-button:hover {
+    background: rgba(226,133,224,0.2);
+    border-color: rgba(226,133,224,1);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(226,133,224,0.3);
+}
+
+.theme-button .sun-icon,
+.theme-button .moon-icon {
+    position: absolute;
+    transition: all 0.3s ease;
+}
+
+.theme-button .sun-icon {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.theme-button .moon-icon {
+    opacity: 0;
+    transform: scale(0.5);
+}
+
+.dark-mode .theme-button .sun-icon {
+    opacity: 0;
+    transform: scale(0.5);
+}
+
+.dark-mode .theme-button .moon-icon {
+    opacity: 1;
+    transform: scale(1);
+}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+    font-family: 'Montserrat', sans-serif;
+    overflow: hidden;
+    background: #000; /* Usunięty gradient */
+    color: white;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: all 0.8s ease;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader-content {
+            text-align: center;
+        }
+
+        .loader-spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top: 3px solid rgba(255, 255, 255, 1);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+.loader-text {
+    color: #ffffff;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        #clouds-canvas, #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        #particles-canvas {
+            z-index: 1;
+            opacity: 0.3;
+        }
+
+        #clouds-canvas {
+            z-index: 0;
+        }
+
+        .content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 2;
+            width: 90%;
+            max-width: 800px;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards 0.5s;
+        }
+
+        .title {
+            font-size: 5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: #e285e0;
+            text-shadow: 
+                0 0 5px rgba(255, 139, 253, 0.9),
+                0 0 10px rgba(255, 139, 253, 0.8),
+                2px 2px 2px rgba(0, 0, 0, 0.5);
+            position: relative;
+            opacity: 0;
+            filter: blur(10px);
+            animation: fadeInBlur 1s ease forwards 0.5s;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            margin-top: 1rem;
+            color: #e285e0;
+            text-shadow: 
+                0 0 5px rgba(226, 133, 224, 0.7),
+                0 0 10px rgba(226, 133, 224, 0.6),
+                0 0 15px rgba(226, 133, 224, 0.8);
+            opacity: 0;
+            filter: blur(10px);
+            animation: fadeInBlur 1s ease forwards 1s;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2rem;
+            padding: 12px 24px;
+            min-width: 160px;
+            min-height: 44px;
+            background-color: rgba(226,133,224,0.1);
+            color: #ffffff;
+            text-decoration: none;
+            border: 2px solid rgba(226,133,224,0.5);
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            opacity: 0;
+            filter: blur(10px);
+            animation: fadeInBlur 1s ease forwards 1.5s;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            box-shadow: 0 0 15px rgba(226,133,224,0.2);
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .cta-button:hover {
+            background-color: rgba(226,133,224,0.1);
+            border-color: rgba(226,133,224,1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(226,133,224,0.3);
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+            letter-spacing: 1.5px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -40%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        @keyframes fadeInBlur {
+            0% {
+                opacity: 0;
+                filter: blur(10px);
+                transform: translate3d(0, -20px, 0);
+            }
+            100% {
+                opacity: 1;
+                filter: blur(0);
+                transform: translate3d(0, 0, 0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+                letter-spacing: 3px;
+            }
+            .subtitle {
+                font-size: 1.1rem;
+                padding: 0 20px;
+            }
+            .cta-button {
+                padding: 12px 24px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 2rem;
+                letter-spacing: 2px;
+            }
+            .subtitle {
+                font-size: 1rem;
+            }
+            .cta-button {
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="theme-toggle">
+        <button id="themeToggle" class="theme-button" aria-label="Zmień motyw">
+            <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
+    </div>
+    <div class="loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <div class="loader-text">Ładowanie...</div>
+        </div>
+    </div>
+
+    <canvas id="particles-canvas"></canvas>
+    <canvas id="clouds-canvas"></canvas>
+    
+    <div class="content">
+        <h1 class="title">Film Portfolio</h1>
+        <p class="subtitle">Tworzę wyjątkowe historie poprzez obraz</p>
+        <a href="stylish.html" class="cta-button">Zobacz Projekty</a>
+    </div>
+    </style>
+    <script type="module">
+        import * as THREE from 'https://unpkg.com/three@0.159.0/build/three.module.js';
+    
+        // Shadery
+        const vertexShader = `
+            varying vec2 vUv;
+            void main() {
+                vUv = uv;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+        `;
+    
+        const fragmentShader = `
+            uniform vec2 uMouse;
+            uniform float uTime;
+            uniform float uAspect;
+            varying vec2 vUv;
+    
+            float random(vec2 st) {
+                return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
+            }
+    
+            float noise(vec2 st) {
+                vec2 i = floor(st);
+                vec2 f = fract(st);
+                
+                float a = random(i);
+                float b = random(i + vec2(1.0, 0.0));
+                float c = random(i + vec2(0.0, 1.0));
+                float d = random(i + vec2(1.0, 1.0));
+    
+                vec2 u = f * f * (3.0 - 2.0 * f);
+                return mix(a, b, u.x) + (c - a)* u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+            }
+    
+            void main() {
+    vec2 uv = vUv;
+    uv.x *= uAspect;
+    
+    vec2 mouse = uMouse * 0.05;
+    uv += mouse;
+    
+    float n = noise(uv * 3.0 + uTime * 0.2);
+    float n2 = noise(uv * 6.0 - uTime * 0.1);
+    
+    vec3 color1 = vec3(0.4, 0.6, 1.0); // Niebieski kolor
+    vec3 color2 = vec3(0.1, 0.2, 0.4); // Ciemniejszy niebieski
+    
+    vec3 finalColor = mix(color1, color2, n * n2);
+    finalColor += 0.05 * vec3(n2);
+    
+    gl_FragColor = vec4(finalColor, 0.9);
+}
+        `;
+    
+        // Klasa efektu tła
+        class BackgroundEffect {
+            constructor() {
+                this.scene = new THREE.Scene();
+                this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+                this.renderer = new THREE.WebGLRenderer({
+                    canvas: document.getElementById('clouds-canvas'),
+                    alpha: true
+                });
+    
+                this.mouse = new THREE.Vector2(0, 0);
+                this.setupScene();
+                this.addEventListeners();
+                this.animate();
+            }
+    
+            setupScene() {
+                this.geometry = new THREE.PlaneGeometry(2, 2);
+                this.material = new THREE.ShaderMaterial({
+                    vertexShader,
+                    fragmentShader,
+                    uniforms: {
+                        uTime: { value: 0 },
+                        uMouse: { value: this.mouse },
+                        uAspect: { value: window.innerWidth / window.innerHeight }
+                    },
+                    transparent: true
+                });
+    
+                const mesh = new THREE.Mesh(this.geometry, this.material);
+                this.scene.add(mesh);
+    
+                this.resize();
+            }
+    
+            addEventListeners() {
+                window.addEventListener('resize', this.resize.bind(this));
+                window.addEventListener('mousemove', (e) => {
+                    this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+                    this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+                });
+            }
+    
+            resize() {
+                const { innerWidth: width, innerHeight: height } = window;
+                this.renderer.setSize(width, height);
+                this.material.uniforms.uAspect.value = width / height;
+            }
+    
+            animate() {
+                requestAnimationFrame(this.animate.bind(this));
+                this.material.uniforms.uTime.value += 0.01;
+                this.renderer.render(this.scene, this.camera);
+            }
+        }
+    
+        // System cząsteczek
+        class ParticleSystem {
+            constructor() {
+                this.canvas = document.getElementById('particles-canvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.particles = [];
+                this.mouseX = 0;
+                this.mouseY = 0;
+                
+                this.init();
+                this.animate();
+                this.addEventListeners();
+            }
+    
+            init() {
+                this.resize();
+                this.createParticles();
+            }
+    
+            resize() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+    
+            createParticles() {
+                const numberOfParticles = Math.min(window.innerWidth * window.innerHeight / 10000, 100);
+                
+                for (let i = 0; i < numberOfParticles; i++) {
+                    this.particles.push({
+                        x: Math.random() * this.canvas.width,
+                        y: Math.random() * this.canvas.height,
+                        size: Math.random() * 2 + 1,
+                        speedX: Math.random() * 0.5 - 0.25,
+                        speedY: Math.random() * 0.5 - 0.25,
+                        opacity: Math.random() * 0.5 + 0.2
+                    });
+                }
+            }
+    
+            animate() {
+                requestAnimationFrame(this.animate.bind(this));
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                this.particles.forEach(particle => {
+                    particle.x += particle.speedX;
+                    particle.y += particle.speedY;
+    
+                    if (particle.x < 0 || particle.x > this.canvas.width) particle.speedX *= -1;
+                    if (particle.y < 0 || particle.y > this.canvas.height) particle.speedY *= -1;
+    
+                    this.ctx.beginPath();
+                    this.ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                    this.ctx.fillStyle = `rgba(255, 255, 255, ${particle.opacity})`;
+                    this.ctx.fill();
+                });
+            }
+    
+            addEventListeners() {
+                window.addEventListener('resize', () => this.resize());
+                window.addEventListener('mousemove', (e) => {
+                    this.mouseX = e.clientX;
+                    this.mouseY = e.clientY;
+                });
+            }
+        }
+    
+        // Inicjalizacja
+        window.addEventListener('load', () => {
+            new BackgroundEffect();
+            new ParticleSystem();
+            
+            setTimeout(() => {
+                document.querySelector('.loader').classList.add('hidden');
+            }, 1500);
+        });
+    </script>
+    <script>
+        document.getElementById('themeToggle').addEventListener('click', function() {
+            // Zapisz aktualny stan przewijania
+            const scrollPosition = window.scrollY;
+            
+            // Przełącz tryb
+            if (document.body.classList.contains('dark-mode')) {
+                window.location.href = 'oficjalna strona startowa.html';
+            } else {
+                window.location.href = 'oficjalna strona startowa noc.html';
+            }
+            
+            // Po załadowaniu nowej strony przywróć pozycję przewijania
+            window.addEventListener('load', function() {
+                window.scrollTo(0, scrollPosition);
+            });
+        });
+        
+        // Sprawdź aktualny tryb przy ładowaniu strony
+        if (window.location.href.includes('noc.html')) {
+            document.body.classList.add('dark-mode');
+        }
+        </script>
+    </body>
+    </html>
+</head>
