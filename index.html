@@ -263,99 +263,105 @@
         `;
 
         const fragmentShader = `
-            uniform vec2 uMouse;
-            uniform float uTime;
-            uniform float uAspect;
-            varying vec2 vUv;
+    uniform vec2 uMouse;
+    uniform float uTime;
+    uniform float uAspect;
+    varying vec2 vUv;
 
-            float random(vec2 st) {
-                return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
-            }
+    float random(vec2 st) {
+        return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
+    }
 
-            float smoothNoise(vec2 st) {
-                vec2 i = floor(st);
-                vec2 f = fract(st);
-                
-                float a = random(i);
-                float b = random(i + vec2(1.0, 0.0));
-                float c = random(i + vec2(0.0, 1.0));
-                float d = random(i + vec2(1.0, 1.0));
+    float smoothNoise(vec2 st) {
+        vec2 i = floor(st);
+        vec2 f = fract(st);
+        
+        float a = random(i);
+        float b = random(i + vec2(1.0, 0.0));
+        float c = random(i + vec2(0.0, 1.0));
+        float d = random(i + vec2(1.0, 1.0));
 
-                vec2 u = f * f * (3.0 - 2.0 * f);
-                return mix(a, b, u.x) +
-                        (c - a)* u.y * (1.0 - u.x) +
-                        (d - b) * u.x * u.y;
-            }
+        vec2 u = f * f * (3.0 - 2.0 * f);
+        return mix(a, b, u.x) +
+                (c - a)* u.y * (1.0 - u.x) +
+                (d - b) * u.x * u.y;
+    }
 
-            float fbm(vec2 x) {
-                float v = 0.0;
-                float a = 0.5;
-                vec2 shift = vec2(100.0);
-                mat2 rot = mat2(cos(0.5), sin(0.5), 
-                                -sin(0.5), cos(0.50));
-                for (int i = 0; i < 6; ++i) {
-                    v += a * smoothNoise(x);
-                    x = rot * x * 2.0 + shift;
-                    a *= 0.5;
-                }
-                return v;
-            }
+    float fbm(vec2 x) {
+        float v = 0.0;
+        float a = 0.5;
+        vec2 shift = vec2(100.0);
+        mat2 rot = mat2(cos(0.5), sin(0.5), 
+                        -sin(0.5), cos(0.50));
+        for (int i = 0; i < 6; ++i) {
+            v += a * smoothNoise(x);
+            x = rot * x * 2.0 + shift;
+            a *= 0.5;
+        }
+        return v;
+    }
 
-            void main() {
-                vec2 uv = vUv;
-                
-                // Dostosowanie UV dla urządzeń mobilnych
-                if (uAspect < 1.0) {
-                    float scale = 1.5;
-                    uv.x = (uv.x - 0.5) * scale + 0.5;
-                    uv.y = (uv.y - 0.5) * scale + 0.5;
-                }
-                
-                // Interakcja z myszką/dotykiem
-                vec2 mouse = uMouse * (uAspect < 1.0 ? 0.05 : 0.08);
-                uv += mouse;
-                
-                // Dostosowanie prędkości i kierunku ruchu
-                float timeScale = (uAspect < 1.0) ? 0.05 : 0.1;
-                float time = uTime * timeScale;
-                
-                vec2 movement;
-                if (uAspect < 1.0) {
-                    // Ruch poziomy dla urządzeń mobilnych
-                    movement = vec2(time * 0.15, 0.0);
-                } else {
-                    // Standardowy ruch dla desktopów
-                    movement = vec2(time * 0.12, time * 0.05);
-                }
-                
-                vec2 q = vec2(0.0);
-                q.x = fbm(uv + movement);
-                q.y = fbm(uv + vec2(1.0));
+    void main() {
+        vec2 uv = vUv;
+        
+        // Dostosowanie UV dla urządzeń mobilnych
+        if (uAspect < 1.0) {
+            // Obrót UV o 90 stopni
+            uv = vec2(uv.y, 1.0 - uv.x);
+            
+            // Skalowanie
+            float scale = 1.5;
+            uv = (uv - 0.5) * scale + 0.5;
+        }
+        
+        // Dostosowanie szerokości UV względem aspect ratio
+        uv.x *= uAspect;
+        
+        // Interakcja z myszką/dotykiem
+        vec2 mouse = uMouse * 0.08;
+        if (uAspect < 1.0) {
+            mouse = mouse.yx; // Zamiana współrzędnych dla urządzeń mobilnych
+        }
+        uv += mouse;
+        
+        // Dostosowanie prędkości i kierunku ruchu
+        float time = uTime * 0.1;
+        vec2 movement;
+        if (uAspect < 1.0) {
+            // Ruch poziomy dla urządzeń mobilnych
+            movement = vec2(time * 0.12, 0.0);
+        } else {
+            movement = vec2(time * 0.12, time * 0.05);
+        }
+        
+        vec2 q = vec2(0.0);
+        q.x = fbm(uv + movement);
+        q.y = fbm(uv + vec2(1.0));
 
-                vec2 r = vec2(0.0);
-                r.x = fbm(uv + 1.0 * q + vec2(1.7, 9.2) + 0.15 * time);
-                r.y = fbm(uv + 1.0 * q + vec2(8.3, 2.8) + 0.126 * time);
+        vec2 r = vec2(0.0);
+        r.x = fbm(uv + 1.0 * q + vec2(1.7, 9.2) + 0.15 * time);
+        r.y = fbm(uv + 1.0 * q + vec2(8.3, 2.8) + 0.126 * time);
 
-                float f = fbm(uv + r);
-                
-                vec3 skyBlue = vec3(0.4, 0.6, 1.0);
-                vec3 cloudColor = vec3(1.0);
-                vec3 bgColor = skyBlue;
-                
-                vec3 finalColor = mix(
-                    cloudColor, 
-                    bgColor, 
-                    smoothstep(0.4, 0.8, f)
-                );
-                
-                float glow = smoothstep(0.4, 0.8, f);
-                finalColor += cloudColor * glow * 0.2;
-                
-                float opacity = smoothstep(0.3, 0.7, f);
-                
-                gl_FragColor = vec4(finalColor, opacity * 0.9);
-            }
-        `;
+        float f = fbm(uv + r);
+        
+        vec3 skyBlue = vec3(0.4, 0.6, 1.0);
+        vec3 cloudColor = vec3(1.0);
+        vec3 bgColor = skyBlue;
+        
+        vec3 finalColor = mix(
+            cloudColor, 
+            bgColor, 
+            smoothstep(0.4, 0.8, f)
+        );
+        
+        float glow = smoothstep(0.4, 0.8, f);
+        finalColor += cloudColor * glow * 0.2;
+        
+        float opacity = smoothstep(0.3, 0.7, f);
+        
+        gl_FragColor = vec4(finalColor, opacity * 0.9);
+    }
+`;
 
         class CloudEffect {
             constructor() {
