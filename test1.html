@@ -238,12 +238,21 @@
             margin-top: 40px;
         }
 
-        .project-example {
-            height: 200px;
-            border-radius: 10px;
-            overflow: hidden;
-            position: relative;
-        }/* Selected Works */
+        .project-example.portfolio-item {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    aspect-ratio: 16/9;
+    transform: translateY(0);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+   
+}
+
+.project-example.portfolio-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(27, 16, 27, 0.5);
+}
+        /* Selected Works */
         .selected-works {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -292,19 +301,19 @@
         }
 
         .portfolio-item-content {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 20px;
-            background: linear-gradient(transparent, rgba(0,0,0,0.9));
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-        }
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    background: linear-gradient(rgba(0,0,0,0.9), transparent);
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+}
 
-        .portfolio-item:hover .portfolio-item-content {
-            transform: translateY(0);
-        }
+.portfolio-item:hover .portfolio-item-content {
+    transform: translateY(0);
+}
         #clouds-canvas {
     position: absolute;
     top: 0;
@@ -416,13 +425,6 @@
                 height: 300px;
             }
         }
-        .ytp-chrome-top,
-        .ytp-chrome-top-buttons,
-        .ytp-title-channel,
-        .ytp-title-text,
-        .ytp-show-cards-title {
-            display: none !important;
-        }
     </style>
 </head>
 <body>
@@ -466,38 +468,60 @@
             <div class="project-examples">
                 <div class="project-example portfolio-item">
                     <iframe 
-    width="100%" 
-    height="100%" 
-    src="https://www.youtube-nocookie.com/embed/b4GZ4K_1H4M?controls=1&modestbranding=1&showinfo=0&rel=0&color=white" 
-    frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-    allowfullscreen>
-</iframe>                    
-                    <style>
-                        .project-example {
-                            position: relative;
-                            width: 100%;
-                            padding-top: 56.25%; /* Proporcje 16:9 (9/16 = 0.5625) */
-                            overflow: hidden;
-                        }
-                    
-                        .project-example iframe {
-                            position: absolute;
-                            top: 0;
-                            left: 0;
-                            width: 100%;
-                            height: 100%;
-                            border: none;
-                        }
-                    </style>
+                        src="https://player.vimeo.com/video/338844163?h=f54fb060de&badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0" 
+                        style="width: 100%; height: 100%; border-radius: 10px;"
+                        frameborder="0" 
+                        allow="autoplay; fullscreen; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
                     <div class="portfolio-item-content">
                         <h4>Scena 1</h4>
                         <p>Opis sceny</p>
                     </div>
                 </div>
-                <!-- Powtórz dla pozostałych przykładów -->
+                <div class="project-example portfolio-item">
+                    <iframe 
+                        src="https://player.vimeo.com/video/338844163?h=f54fb060de&badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0" 
+                        style="width: 100%; height: 100%; border-radius: 10px;"
+                        frameborder="0" 
+                        allow="autoplay; fullscreen; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                    <div class="portfolio-item-content">
+                        <h4>Scena 2</h4>
+                        <p>Opis sceny</p>
+                    </div>
+                </div>
+                <div class="project-example portfolio-item">
+                    <iframe 
+                        src="https://player.vimeo.com/video/338844163?h=f54fb060de&badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0" 
+                        style="width: 100%; height: 100%; border-radius: 10px;"
+                        frameborder="0" 
+                        allow="autoplay; fullscreen; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                    <div class="portfolio-item-content">
+                        <h4>Scena 2</h4>
+                        <p>Opis sceny</p>
+                    </div>
+                </div>
+                <div class="project-example portfolio-item">
+                    <iframe 
+                        src="https://player.vimeo.com/video/338844163?h=f54fb060de&badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0" 
+                        style="width: 100%; height: 100%; border-radius: 10px;"
+                        frameborder="0" 
+                        allow="autoplay; fullscreen; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                    <div class="portfolio-item-content">
+                        <h4>Scena 2</h4>
+                        <p>Opis sceny</p>
+                    </div>
+                </div>
             </div>
+            <script src="https://player.vimeo.com/api/player.js"></script>
         </div>
+        
     </section>
 
     <section id="selected-works" class="portfolio-section">
@@ -562,17 +586,19 @@
 
         // Animacja elementów portfolio przy scrollowaniu
         gsap.utils.toArray('.portfolio-item').forEach(item => {
-            gsap.to(item, {
-                opacity: 1,
-                y: 0,
-                duration: 1,
-                scrollTrigger: {
-                    trigger: item,
-                    start: 'top bottom-=100',
-                    toggleActions: 'play none none reverse'
-                }
-            });
+    if (!item.classList.contains('project-example')) { // Dodajemy ten warunek
+        gsap.to(item, {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            scrollTrigger: {
+                trigger: item,
+                start: 'top bottom-=100',
+                toggleActions: 'play none none reverse'
+            }
         });
+    }
+});
 
         // Płynne przewijanie do sekcji
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
