@@ -187,12 +187,36 @@
         }
 
         /* Major Projects */
-        .major-project {
-            margin-bottom: 150px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 4px 8px rgba(226, 133, 224, 0.5), 0 6px 20px rgba(226, 133, 224, 0.3); /* Użycie różowego cienia */        }
+.major-project {
+    margin-bottom: 150px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 4px 8px rgba(226, 133, 224, 0.5), 0 6px 20px rgba(226, 133, 224, 0.3);
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .major-project {
+        padding: 20px;
+        margin-bottom: 80px;
+    }
+    
+    .project-examples {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .project-example.portfolio-item {
+        min-height: 250px;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    
+    .portfolio-section {
+        padding: 60px 15px;
+    }
+}
 
         .major-project-header {
             display: grid;
@@ -349,19 +373,6 @@
             .hamburger {
                 display: flex;
             }
-
-            .project-example.portfolio-item {
-        min-height: 300px;
-        height: auto;
-    }
-    
-    .project-example.portfolio-item iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
-    }
 
             .nav-links {
                 position: fixed;
