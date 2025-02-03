@@ -277,68 +277,190 @@
     transform: translateY(-5px);
     box-shadow: 0 6px 12px rgba(27, 16, 27, 0.5);
 }
-        /* Selected Works */
-        .selected-works {
+
+/* Selected Works - Grid Layout */
+.selected-works {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+    gap: 30px;
     padding: 0 40px;
-}
-
-.work-preview {
-    aspect-ratio: 16/9;
-    min-height: 200px;
-}
-
-.work-item {
-    position: relative;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(226, 133, 224, 0.5), 0 6px 20px rgba(226, 133, 224, 0.3);
-    padding: 0;
-}
-
-.work-preview {
-    aspect-ratio: 16/9;
-    overflow: hidden;
-}
-
-.work-preview iframe {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 10px;
-}
-
-.work-details {
-   position: absolute;
-   top: 100%;
-   left: 0;
-   right: 0;
-   padding: 20px;
-   background: linear-gradient(transparent, rgba(0,0,0,0.9));
-   transition: all 0.3s ease;
-   transform: translateY(-100%);
-}
-
-.work-item:hover .work-details {
-   transform: translateY(0);
-}
-.work-preview iframe {
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
-}
-.selected-works {
     margin: 0 40px;
 }
 
+/* Work Item - Container */
+.work-item {
+    position: relative;
+    border-radius: 15px;
+    overflow: visible;
+    margin-bottom: 80px;
+    transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1); /* Bardziej płynna animacja */
+}
+
+
+.work-item:hover {
+    transform: translateY(-5px);
+}
+
+/* Video Preview Container */
+.work-preview {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(226, 133, 224, 0.3);
+    background: var(--secondary-color);
+    z-index: 2;
+    transition: box-shadow 0.5s ease; /* Płynna zmiana cienia */
+}
+
+.work-preview iframe {
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    border: none;
+}
+
+/* Details Overlay */
+.work-details {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    width: 100%;
+    padding: 30px 30px;
+    background: linear-gradient(
+        to bottom,
+        rgba(37, 37, 37, 0.98) 0%,
+        rgba(37, 37, 37, 0.95) 100%
+    );
+    backdrop-filter: blur(10px);
+    border-radius: 0 0 15px 15px;
+    transform: translateY(-15%); /* Delikatniejsze początkowe przesunięcie */
+    opacity: 0;
+    z-index: 1;
+    transition: all 0.5s cubic-bezier(0.33, 1, 0.68, 1); /* Bardziej płynna animacja */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(226, 133, 224, 0.1);
+    border-top: none;
+}
+
+/* Hover Effect */
+.work-item:hover {
+    transform: translateY(-5px);
+}
+
+.work-item:hover .work-preview {
+    box-shadow: 0 6px 20px rgba(226, 133, 224, 0.4); /* Mocniejszy cień przy hover */
+}
+
+.work-item:hover .work-details {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Content Animations */
+.work-details h3 {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    transform: translateY(-8px); /* Delikatniejsze przesunięcie */
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.33, 1, 0.68, 1) 0.1s; /* Płynniejsza animacja z opóźnieniem */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
 
 .work-category {
+    display: inline-block;
     color: var(--accent-color);
     font-size: 0.9rem;
+    font-weight: 500;
     text-transform: uppercase;
+    margin-bottom: 12px;
+    transform: translateY(-8px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.33, 1, 0.68, 1) 0.2s;
+    letter-spacing: 1px;
+    padding: 4px 12px;
+    background: rgba(226, 133, 224, 0.1);
+    border-radius: 20px;
 }
+
+.work-details p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    line-height: 1.7;
+    transform: translateY(-8px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.33, 1, 0.68, 1) 0.3s;
+    margin-bottom: 0;
+}
+
+.work-item:hover .work-details h3,
+.work-item:hover .work-details .work-category,
+.work-item:hover .work-details p {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .selected-works {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.work-details h3 {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    transform: translateY(-10px);
+    opacity: 0;
+    transition: all 0.3s ease 0.1s;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.work-category {
+    display: inline-block;
+    color: var(--accent-color);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    transform: translateY(-10px);
+    opacity: 0;
+    transition: all 0.3s ease 0.2s;
+    letter-spacing: 1px;
+    padding: 4px 12px;
+    background: rgba(226, 133, 224, 0.1);
+    border-radius: 20px;
+}
+
+.work-details p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    line-height: 1.7;
+    transform: translateY(-10px);
+    opacity: 0;
+    transition: all 0.3s ease 0.3s;
+    margin-bottom: 0;
+}
+
+.work-item:hover .work-details h3,
+.work-item:hover .work-details .work-category,
+.work-item:hover .work-details p {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+@media (max-width: 480px) {
+    .selected-works {
+        grid-template-columns: 1fr;
+    }
+}
+
 
         /* Reels */
         .reels-grid {
@@ -388,38 +510,7 @@
 .portfolio-item:hover .portfolio-item-content {
     transform: translateY(0);
 }
-/* Dla Wybranych Realizacji */
-.work-item {
-   position: relative;
-   border-radius: 10px;
-   overflow: visible;
-   box-shadow: 0 4px 8px rgba(226, 133, 224, 0.5), 0 6px 20px rgba(226, 133, 224, 0.3);
-   transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
 
-.work-item:hover {
-   transform: translateY(-5px);
-   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), 0 6px 20px rgba(0, 0, 0, 0.3);
-}
-
-.work-details {
-   position: absolute;
-   top: 100%;
-   left: 0;
-   right: 0;
-   padding: 20px;
-   background: linear-gradient(rgba(0,0,0,0.95), rgba(0,0,0,0.8), transparent);
-   opacity: 0;
-   transform: translateY(-20px);
-   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-   border-radius: 0 0 10px 10px;
-   backdrop-filter: blur(5px);
-}
-
-.work-item:hover .work-details {
-   opacity: 1;
-   transform: translateY(0);
-}
         #clouds-canvas {
     position: absolute;
     top: 0;
@@ -434,12 +525,6 @@
             overflow: hidden;
         }
 
-        /* Responsive Design */
-        @media (max-width: 1400px) {
-            .selected-works, .reels-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
 
         @media (max-width: 1200px) {
             .project-examples {
@@ -536,6 +621,187 @@
                 height: 300px;
             }
         }
+        /* Reels Grid Layout */
+.reels-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 25px;
+    padding: 0 40px;
+    margin: 0 40px;
+}
+
+/* Reel Item Container */
+.reel-item {
+    position: relative;
+    aspect-ratio: 9/16;
+    border-radius: 15px;
+    overflow: visible;
+    transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+    margin-bottom: 40px;
+}
+
+/* Reel Preview */
+.reel-preview {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(226, 133, 224, 0.3);
+    z-index: 2;
+}
+
+.reel-preview img,
+.reel-preview video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+    transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+/* Details Panel */
+.reel-details {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    width: 100%;
+    padding: 25px;
+    background: linear-gradient(
+        to bottom,
+        rgba(37, 37, 37, 0.98) 0%,
+        rgba(37, 37, 37, 0.95) 100%
+    );
+    backdrop-filter: blur(10px);
+    border-radius: 0 0 15px 15px;
+    transform: translateY(-15%);
+    opacity: 0;
+    z-index: 1;
+    transition: all 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(226, 133, 224, 0.1);
+    border-top: none;
+}
+
+/* Hover Effects */
+.reel-item:hover {
+    transform: translateY(-5px);
+}
+
+.reel-item:hover .reel-preview img,
+.reel-item:hover .reel-preview video {
+    transform: scale(1.05);
+}
+
+.reel-item:hover .reel-details {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Content Styling */
+.reel-details h4 {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    transform: translateY(-8px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.33, 1, 0.68, 1) 0.1s;
+}
+
+.reel-category {
+    display: inline-block;
+    color: var(--accent-color);
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    transform: translateY(-8px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.33, 1, 0.68, 1) 0.2s;
+    letter-spacing: 1px;
+    padding: 3px 10px;
+    background: rgba(226, 133, 224, 0.1);
+    border-radius: 20px;
+}
+
+.reel-details p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    transform: translateY(-8px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.33, 1, 0.68, 1) 0.3s;
+    margin-bottom: 0;
+}
+
+.reel-item:hover .reel-details h4,
+.reel-item:hover .reel-details .reel-category,
+.reel-item:hover .reel-details p {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Play Button Overlay */
+.reel-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    width: 60px;
+    height: 60px;
+    background: rgba(226, 133, 224, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.4s ease;
+}
+
+.reel-play:after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 0 10px 20px;
+    border-color: transparent transparent transparent white;
+    margin-left: 5px;
+}
+
+.reel-item:hover .reel-play {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+    .reels-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 1200px) {
+    .reels-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .reels-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        padding: 0 20px;
+        margin: 0 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .reels-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
     </style>
 </head>
 <body>
@@ -642,31 +908,46 @@
     <section id="selected-works" class="portfolio-section">
         <h2 class="section-title">WYBRANE REALIZACJE</h2>
         <div class="selected-works">
+            <!-- Pojedyncza realizacja -->
             <div class="work-item">
                 <div class="work-preview">
-                    <iframe src="https://player.vimeo.com/video/[ID]" frameborder="0" allow="autoplay; fullscreen"></iframe>
+                    <iframe 
+                        src="https://player.vimeo.com/video/338844163?h=f54fb060de&badge=0&autopause=0&player_id=0&app_id=58479" 
+                        frameborder="0" 
+                        allow="autoplay; fullscreen; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
                 </div>
                 <div class="work-details">
                     <h3>Tytuł projektu</h3>
                     <span class="work-category">Film / Reklama</span>
-                    <p>Opis projektu...</p>
+                    <p>Krótki opis projektu pokazujący szczegóły realizacji.</p>
                 </div>
             </div>
-            <!-- Dodaj więcej work-item -->
         </div>
     </section>
 
     <section id="reels" class="portfolio-section">
         <h2 class="section-title">PRZYKŁADOWE ROLKI</h2>
         <div class="reels-grid">
-            <div class="reel-item portfolio-item">
-                <img src="/api/placeholder/450/800" alt="Rolka">
-                <div class="portfolio-item-content">
-                    <h4>Nazwa Rolki</h4>
-                    <p>Krótki opis</p>
+            <!-- Pojedyncza rolka -->
+            <div class="reel-item">
+                <div class="reel-preview">
+                    <iframe 
+                        src="https://player.vimeo.com/video/819498537?h=ccaf048025&badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0" 
+                        frameborder="0" 
+                        allow="autoplay; fullscreen; picture-in-picture" 
+                        allowfullscreen
+                        style="width: 100%; height: 100%; border-radius: 15px;"
+                    >
+                    </iframe>
+                </div>
+                <div class="reel-details">
+                    <h4>Najlepszy Projekt</h4>
+                    <span class="reel-category">Film Promocyjny</span>
+                    <p>Dynamiczna produkcja reklamowa pokazująca najlepsze momenty</p>
                 </div>
             </div>
-            <!-- Powtórz dla pozostałych rolek -->
         </div>
     </section>
 
