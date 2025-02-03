@@ -187,12 +187,36 @@
         }
 
         /* Major Projects */
-        .major-project {
-            margin-bottom: 150px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 4px 8px rgba(226, 133, 224, 0.5), 0 6px 20px rgba(226, 133, 224, 0.3); /* Użycie różowego cienia */        }
+.major-project {
+    margin-bottom: 150px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 4px 8px rgba(226, 133, 224, 0.5), 0 6px 20px rgba(226, 133, 224, 0.3);
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .major-project {
+        padding: 20px;
+        margin-bottom: 80px;
+    }
+    
+    .project-examples {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .project-example.portfolio-item {
+        min-height: 250px;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    
+    .portfolio-section {
+        padding: 60px 15px;
+    }
+}
 
         .major-project-header {
             display: grid;
@@ -243,6 +267,7 @@
     border-radius: 10px;
     overflow: hidden;
     aspect-ratio: 16/9;
+    min-height: 200px;
     transform: translateY(0);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
    
@@ -254,18 +279,66 @@
 }
         /* Selected Works */
         .selected-works {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 20px;
-            padding: 0 40px;
-        }
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding: 0 40px;
+}
 
-        .selected-work-item {
-            aspect-ratio: 16/9;
-            position: relative;
-            border-radius: 10px;
-            overflow: hidden;
-        }
+.work-preview {
+    aspect-ratio: 16/9;
+    min-height: 200px;
+}
+
+.work-item {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(226, 133, 224, 0.5), 0 6px 20px rgba(226, 133, 224, 0.3);
+    padding: 0;
+}
+
+.work-preview {
+    aspect-ratio: 16/9;
+    overflow: hidden;
+}
+
+.work-preview iframe {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.work-details {
+   position: absolute;
+   top: 100%;
+   left: 0;
+   right: 0;
+   padding: 20px;
+   background: linear-gradient(transparent, rgba(0,0,0,0.9));
+   transition: all 0.3s ease;
+   transform: translateY(-100%);
+}
+
+.work-item:hover .work-details {
+   transform: translateY(0);
+}
+.work-preview iframe {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+.selected-works {
+    margin: 0 40px;
+}
+
+
+.work-category {
+    color: var(--accent-color);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
 
         /* Reels */
         .reels-grid {
@@ -300,7 +373,8 @@
             transform: scale(1.1);
         }
 
-        .portfolio-item-content {
+        /* Dla Większe Projekty */
+.portfolio-item-content {
     position: absolute;
     top: 0;
     left: 0;
@@ -313,6 +387,38 @@
 
 .portfolio-item:hover .portfolio-item-content {
     transform: translateY(0);
+}
+/* Dla Wybranych Realizacji */
+.work-item {
+   position: relative;
+   border-radius: 10px;
+   overflow: visible;
+   box-shadow: 0 4px 8px rgba(226, 133, 224, 0.5), 0 6px 20px rgba(226, 133, 224, 0.3);
+   transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.work-item:hover {
+   transform: translateY(-5px);
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.work-details {
+   position: absolute;
+   top: 100%;
+   left: 0;
+   right: 0;
+   padding: 20px;
+   background: linear-gradient(rgba(0,0,0,0.95), rgba(0,0,0,0.8), transparent);
+   opacity: 0;
+   transform: translateY(-20px);
+   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+   border-radius: 0 0 10px 10px;
+   backdrop-filter: blur(5px);
+}
+
+.work-item:hover .work-details {
+   opacity: 1;
+   transform: translateY(0);
 }
         #clouds-canvas {
     position: absolute;
@@ -397,14 +503,19 @@
             }
             
             .parallax-wrapper {
-        height: 100vh;
-        perspective: none;
-    }
+    height: 100vh;
+    perspective: none;
+    overflow: hidden;
+}
     
-    #clouds-canvas {
-        position: fixed;
-        height: 100vh;
-    }
+#clouds-canvas {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    object-fit: cover;
+    transform: scale(1.1);
+    pointer-events: none;
+}
     
     .hero-content {
         padding-top: 100px;
@@ -466,13 +577,17 @@
                 </div>
             </div>
             <div class="project-examples">
-                <div class="project-example portfolio-item">
+                <div class="project-example portfolio-item">        
                     <iframe 
-                        src="https://player.vimeo.com/video/338844163?h=f54fb060de&badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0" 
-                        style="width: 100%; height: 100%; border-radius: 10px;"
+                        src="https://player.vimeo.com/video/338844163?h=f54fb060de&badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0&controls=1&background=0&transparent=0&responsive=1&controls=1&dnt=1&playsinline=1" 
+                        style="width: 100%; height: 100%; border-radius: 10px; background: #000;"
                         frameborder="0" 
                         allow="autoplay; fullscreen; picture-in-picture" 
-                        allowfullscreen>
+                        allowfullscreen
+                        playsinline
+                        webkitplaysinline
+                        webkitallowfullscreen 
+                        mozallowfullscreen>
                     </iframe>
                     <div class="portfolio-item-content">
                         <h4>Scena 1</h4>
@@ -527,14 +642,17 @@
     <section id="selected-works" class="portfolio-section">
         <h2 class="section-title">WYBRANE REALIZACJE</h2>
         <div class="selected-works">
-            <div class="selected-work-item portfolio-item">
-                <img src="/api/placeholder/800/450" alt="Realizacja">
-                <div class="portfolio-item-content">
-                    <h4>Nazwa Projektu</h4>
-                    <p>Krótki opis</p>
+            <div class="work-item">
+                <div class="work-preview">
+                    <iframe src="https://player.vimeo.com/video/[ID]" frameborder="0" allow="autoplay; fullscreen"></iframe>
+                </div>
+                <div class="work-details">
+                    <h3>Tytuł projektu</h3>
+                    <span class="work-category">Film / Reklama</span>
+                    <p>Opis projektu...</p>
                 </div>
             </div>
-            <!-- Powtórz dla pozostałych realizacji -->
+            <!-- Dodaj więcej work-item -->
         </div>
     </section>
 
