@@ -419,8 +419,10 @@
     }
 
     .work-item {
-        margin-bottom: 40px;
+        margin-bottom: 80px; /* Zwiększony margines na dole */
         position: relative;
+        height: auto;
+        padding-bottom: 150px; /* Miejsce na wysunięty panel */
     }
 
     .work-preview {
@@ -441,10 +443,11 @@
 
     .work-details {
         position: absolute;
-        bottom: 0;
+        bottom: -150px; /* Zmieniamy z 0 na -150px */
         left: 0;
         width: 100%;
-        transform: translateY(100%);
+        min-height: 150px; /* Minimalna wysokość panelu */
+        transform: translateY(0);
         background: linear-gradient(
             to bottom,
             rgba(37, 37, 37, 0.98) 0%,
@@ -453,12 +456,17 @@
         padding: 20px;
         transition: transform 0.3s ease;
         border-radius: 0 0 15px 15px;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
     }
 
     .work-item:active .work-details,
     .work-item:focus .work-details,
     .work-item.touched .work-details {
         transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
     }
 
     .work-details h3,
@@ -466,6 +474,11 @@
     .work-details p {
         opacity: 1;
         transform: translateY(0);
+    }
+
+    /* Dodajemy większy odstęp przed sekcją reels */
+    #reels {
+        margin-top: 50px;
     }
 }
 
