@@ -324,7 +324,7 @@
 /* Details Overlay */
 .work-details {
     position: absolute;
-    top: 100%;
+    top: 95%;
     left: 0;
     right: 0;
     width: 100%;
@@ -339,6 +339,7 @@
     transform: translateY(-15%); /* Delikatniejsze początkowe przesunięcie */
     opacity: 0;
     z-index: 1;
+    margin-top: -15px; /* Dodane, żeby panel zachodził wyżej */
     transition: all 0.5s cubic-bezier(0.33, 1, 0.68, 1); /* Bardziej płynna animacja */
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
     border: 1px solid rgba(226, 133, 224, 0.1);
