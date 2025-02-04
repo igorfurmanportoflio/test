@@ -425,7 +425,7 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 768px) { 
     .selected-works {
         grid-template-columns: 1fr;
         padding: 0 20px;
@@ -435,10 +435,8 @@
     .work-item {
         position: relative;
         border-radius: 15px;
-        overflow: hidden; /* Zmienione z visible na hidden */
-        margin-bottom: 120px;
-        transition: transform 0.3s ease; /* Uproszczona animacja */
-        min-height: 250px;
+        overflow: visible;
+        margin-bottom: 80px;
     }
 
     .work-preview {
@@ -449,7 +447,6 @@
         overflow: hidden;
         box-shadow: 0 4px 15px rgba(226, 133, 224, 0.3);
         background: var(--secondary-color);
-        z-index: 2;
     }
 
     .work-preview iframe {
@@ -461,32 +458,33 @@
 
     .work-details {
         position: absolute;
-        bottom: 0;
         left: 0;
-        width: 100%;
-        padding: 20px;
+        right: 0;
+        bottom: 0;
         background: linear-gradient(
             to bottom,
-            rgba(37, 37, 37, 0.9) 0%,
+            rgba(37, 37, 37, 0.95) 0%,
             rgba(37, 37, 37, 0.98) 100%
         );
-        backdrop-filter: blur(10px);
+        padding: 20px;
+        border-radius: 0 0 15px 15px;
         transform: translateY(100%);
         transition: transform 0.3s ease;
-        z-index: 3;
+        opacity: 1;
+        pointer-events: none;
     }
 
     .work-item.active .work-details {
         transform: translateY(0);
+        pointer-events: auto;
     }
 
-    /* Resetowanie efektów hover dla mobile */
-    .work-item:hover {
-        transform: none;
-    }
-
-    .work-item:hover .work-preview {
-        box-shadow: 0 4px 15px rgba(226, 133, 224, 0.3);
+    .work-details h3,
+    .work-details .work-category,
+    .work-details p {
+        transform: translateY(0);
+        opacity: 1;
+        transition: none;
     }
 }
 
@@ -1110,46 +1108,44 @@
     
     if (isMobile) {
         const workItems = document.querySelectorAll('.work-item');
-        let touchStartY = 0;
-        let touchEndY = 0;
         
         workItems.forEach(item => {
-            item.addEventListener('touchstart', function(e) {
-                touchStartY = e.touches[0].clientY;
+            const preview = item.querySelector('.work-preview');
+            
+            preview.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
                 
-                // Zamykamy wszystkie inne otwarte panele
+                // Zamykamy wszystkie inne panele
                 workItems.forEach(otherItem => {
                     if (otherItem !== item) {
                         otherItem.classList.remove('active');
                     }
                 });
                 
-                // Przełączamy stan aktywny dla klikniętego elementu
-                this.classList.toggle('active');
-            });
-            
-            item.addEventListener('touchmove', function(e) {
-                touchEndY = e.touches[0].clientY;
-                const deltaY = touchEndY - touchStartY;
-                
-                // Jeśli użytkownik przewija w dół i panel jest otwarty, zamykamy go
-                if (deltaY > 50 && this.classList.contains('active')) {
-                    this.classList.remove('active');
-                }
-                // Jeśli użytkownik przewija w górę i panel jest zamknięty, otwieramy go
-                else if (deltaY < -50 && !this.classList.contains('active')) {
-                    this.classList.add('active');
-                }
+                // Przełączamy stan aktywny
+                item.classList.toggle('active');
             });
         });
         
-        // Zamykanie panelu przy kliknięciu poza nim
-        document.addEventListener('touchstart', function(e) {
+        // Zamykamy panel przy kliknięciu poza elementem
+        document.addEventListener('click', function(e) {
             if (!e.target.closest('.work-item')) {
                 workItems.forEach(item => {
                     item.classList.remove('active');
                 });
             }
+        });
+        
+        // Dodajemy obsługę zamykania przez dotknięcie panelu
+        document.querySelectorAll('.work-details').forEach(details => {
+            details.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const workItem = this.closest('.work-item');
+                if (workItem) {
+                    workItem.classList.remove('active');
+                }
+            });
         });
     }
 });
