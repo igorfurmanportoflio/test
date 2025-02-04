@@ -435,10 +435,8 @@
     .work-item {
         position: relative;
         border-radius: 15px;
-        overflow: hidden;  /* zmienione z visible na hidden aby panel nie wystawał */
-        margin-bottom: 120px;
-        transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
-        min-height: 250px;
+        overflow: visible;
+        margin-bottom: 80px;
     }
 
     .work-preview {
@@ -452,16 +450,10 @@
         z-index: 2;
     }
 
-    .work-preview iframe {
-        width: 100%;
-        height: 100%;
-        border-radius: 15px;
-        border: none;
-    }
-
+    /* Kopiujemy dokładnie te same style co przy hover, tylko zmieniamy hover na active */
     .work-details {
         position: absolute;
-        bottom: 0;
+        top: 100%;
         left: 0;
         right: 0;
         width: 100%;
@@ -473,16 +465,33 @@
         );
         backdrop-filter: blur(10px);
         border-radius: 0 0 15px 15px;
-        transform: translateY(101%);  /* zmienione ze 100% na 101% aby ukryć cień */
+        transform: translateY(-15%);
+        opacity: 0;
         z-index: 1;
-        transition: transform 0.3s ease;  /* uproszczona animacja */
+        transition: all 0.5s cubic-bezier(0.33, 1, 0.68, 1);
         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
         border: 1px solid rgba(226, 133, 224, 0.1);
         border-top: none;
     }
 
     .work-item.active .work-details {
+        opacity: 1;
         transform: translateY(0);
+    }
+
+    .work-details h3,
+    .work-details .work-category,
+    .work-details p {
+        transform: translateY(-8px);
+        opacity: 0;
+        transition: all 0.4s cubic-bezier(0.33, 1, 0.68, 1);
+    }
+
+    .work-item.active .work-details h3,
+    .work-item.active .work-details .work-category,
+    .work-item.active .work-details p {
+        transform: translateY(0);
+        opacity: 1;
     }
 }
 
