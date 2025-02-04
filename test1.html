@@ -425,17 +425,11 @@
     }
 }
 
-@media (max-width: 768px) { 
-    .selected-works {
-        grid-template-columns: 1fr;
-        padding: 0 20px;
-        margin: 0;
-    }
-
+@media (max-width: 768px) {
     .work-item {
         position: relative;
         border-radius: 15px;
-        overflow: visible;
+        overflow: hidden;  /* zmienione na hidden żeby panel nie wystawał */
         margin-bottom: 80px;
     }
 
@@ -445,46 +439,28 @@
         aspect-ratio: 16/9;
         border-radius: 15px;
         overflow: hidden;
-        box-shadow: 0 4px 15px rgba(226, 133, 224, 0.3);
-        background: var(--secondary-color);
-    }
-
-    .work-preview iframe {
-        width: 100%;
-        height: 100%;
-        border-radius: 15px;
-        border: none;
     }
 
     .work-details {
         position: absolute;
         left: 0;
         right: 0;
-        bottom: 0;
-        background: linear-gradient(
-            to bottom,
-            rgba(37, 37, 37, 0.95) 0%,
-            rgba(37, 37, 37, 0.98) 100%
-        );
+        bottom: -100%;  /* panel jest schowany pod spodem */
+        background: rgba(37, 37, 37, 0.98);
         padding: 20px;
-        border-radius: 0 0 15px 15px;
-        transform: translateY(100%);
-        transition: transform 0.3s ease;
-        opacity: 1;
-        pointer-events: none;
+        transition: bottom 0.3s ease;
     }
 
     .work-item.active .work-details {
-        transform: translateY(0);
-        pointer-events: auto;
+        bottom: 0;  /* panel wysuwa się do góry */
     }
 
+    /* Upewniamy się, że tekst jest od razu widoczny */
     .work-details h3,
     .work-details .work-category,
     .work-details p {
-        transform: translateY(0);
         opacity: 1;
-        transition: none;
+        transform: none;
     }
 }
 
@@ -1110,41 +1086,15 @@
         const workItems = document.querySelectorAll('.work-item');
         
         workItems.forEach(item => {
-            const preview = item.querySelector('.work-preview');
-            
-            preview.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
+            item.addEventListener('click', function(e) {
+                this.classList.toggle('active');
                 
-                // Zamykamy wszystkie inne panele
+                // Zamykamy inne panele
                 workItems.forEach(otherItem => {
-                    if (otherItem !== item) {
+                    if (otherItem !== this) {
                         otherItem.classList.remove('active');
                     }
                 });
-                
-                // Przełączamy stan aktywny
-                item.classList.toggle('active');
-            });
-        });
-        
-        // Zamykamy panel przy kliknięciu poza elementem
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.work-item')) {
-                workItems.forEach(item => {
-                    item.classList.remove('active');
-                });
-            }
-        });
-        
-        // Dodajemy obsługę zamykania przez dotknięcie panelu
-        document.querySelectorAll('.work-details').forEach(details => {
-            details.addEventListener('click', function(e) {
-                e.stopPropagation();
-                const workItem = this.closest('.work-item');
-                if (workItem) {
-                    workItem.classList.remove('active');
-                }
             });
         });
     }
