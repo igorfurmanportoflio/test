@@ -426,15 +426,9 @@
 }
 
 @media (max-width: 768px) {
-    .selected-works {
-        grid-template-columns: 1fr;
-        padding: 0 20px;
-        margin: 0;
-    }
-
     .work-item {
         position: relative;
-        margin-bottom: 100px; /* Zwiększamy odstęp między elementami */
+        margin-bottom: 100px;
     }
 
     .work-preview {
@@ -445,56 +439,34 @@
         overflow: hidden;
     }
 
-    .work-preview iframe {
-        width: 100%;
-        height: 100%;
-        border-radius: 15px;
-        border: none;
-    }
-
     .work-details {
         position: absolute;
         bottom: 0;
         left: 0;
         right: 0;
         width: 100%;
-        transform: translateY(100%);
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
+        padding: 20px;
         background: linear-gradient(
             to bottom,
             rgba(37, 37, 37, 0.98) 0%,
             rgba(37, 37, 37, 0.95) 100%
         );
-        z-index: 10;
-        padding: 20px;
         border-radius: 0 0 15px 15px;
-    }
-    
-    .work-item:hover {
-        transform: translateY(-5px);
-    }
-
-    .work-item:hover .work-preview,
-    .work-item.touched .work-preview {
-        box-shadow: 0 6px 20px rgba(226, 133, 224, 0.4);
+        transform: translateY(100%);
+        opacity: 0;
+        visibility: hidden;
+        z-index: 10;
+        transition: all 0.3s ease;
     }
 
-    .work-item:hover .work-details,
-    .work-item.touched .work-details {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    .work-item:last-child {
-        margin-bottom: 180px;
-    }
+    /* Stan aktywny - panel jest widoczny */
     .work-item.active .work-details {
         transform: translateY(0);
         opacity: 1;
         visibility: visible;
     }
+
+    /* Animacje elementów wewnątrz panelu */
     .work-item.active .work-details h3,
     .work-item.active .work-details .work-category,
     .work-item.active .work-details p {
@@ -1140,37 +1112,35 @@
             });
         });
         document.addEventListener('DOMContentLoaded', function() {
+    // Sprawdzamy czy urządzenie jest mobilne
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         const workItems = document.querySelectorAll('.work-item');
         let activeItem = null;
 
-        // Funkcja zamykająca wszystkie panele oprócz wybranego
-        function closeOtherPanels(currentItem) {
-            workItems.forEach(item => {
-                if (item !== currentItem) {
-                    item.classList.remove('active');
-                }
-            });
-        }
-
         workItems.forEach(item => {
-            const preview = item.querySelector('.work-preview');
-            
-            preview.addEventListener('touchstart', function(e) {
-                e.preventDefault(); // Zapobiegamy domyślnym akcjom
+            // Dodajemy obsługę dotyku do całego elementu work-item
+            item.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
                 
-                if (item.classList.contains('active')) {
+                // Jeśli element jest już aktywny, deaktywujemy go
+                if (item === activeItem) {
                     item.classList.remove('active');
                     activeItem = null;
                 } else {
-                    closeOtherPanels(item);
+                    // Deaktywujemy poprzedni aktywny element
+                    if (activeItem) {
+                        activeItem.classList.remove('active');
+                    }
+                    
+                    // Aktywujemy nowy element
                     item.classList.add('active');
                     activeItem = item;
                 }
             });
         });
 
-        // Zamykanie panelu przy dotknięciu poza elementem
+        // Zamykanie panelu przy dotknięciu gdziekolwiek poza elementem
         document.addEventListener('touchstart', function(e) {
             if (activeItem && !activeItem.contains(e.target)) {
                 activeItem.classList.remove('active');
