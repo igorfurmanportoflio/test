@@ -436,10 +436,6 @@
         margin-bottom: 120px;
         position: relative;
         height: 300px;
-        border-radius: 15px;
-        overflow: visible;
-        transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
-        box-shadow: 0 4px 15px rgba(226, 133, 224, 0.3);
     }
 
     .work-item:last-child {
@@ -447,15 +443,15 @@
     }
 
     .work-preview {
-        position: absolute;
+        position: relative;
         width: 100%;
         height: 100%;
-        top: 0;
-        left: 0;
-        background: var(--secondary-color);
         border-radius: 15px;
         overflow: hidden;
         box-shadow: 0 4px 15px rgba(226, 133, 224, 0.3);
+        background: var(--secondary-color);
+        z-index: 2;
+        transition: box-shadow 0.5s ease;
     }
 
     .work-preview iframe {
@@ -487,27 +483,19 @@
         border: 1px solid rgba(226, 133, 224, 0.1);
     }
 
+    .work-item:hover,
+    .work-item.touched {
+        transform: translateY(-5px);
+    }
+
+    .work-item:hover .work-preview,
+    .work-item.touched .work-preview {
+        box-shadow: 0 6px 20px rgba(226, 133, 224, 0.4);
+    }
+
     .work-item.touched .work-details {
         transform: translateY(0);
-    }
-
-    .work-details h3,
-    .work-details .work-category,
-    .work-details p {
         opacity: 1;
-        transform: translateY(0);
-    }
-
-    .portfolio-section {
-        padding: 60px 0;
-        margin: 0;
-        background: var(--secondary-color);
-        position: relative;
-        z-index: 2;
-    }
-
-    #reels {
-        padding-top: 40px;
     }
 }
 
