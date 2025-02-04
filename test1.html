@@ -435,9 +435,9 @@
     .work-item {
         position: relative;
         border-radius: 15px;
-        overflow: visible;
+        overflow: hidden; /* Zmienione z visible na hidden */
         margin-bottom: 120px;
-        transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+        transition: transform 0.3s ease; /* Uproszczona animacja */
         min-height: 250px;
     }
 
@@ -450,7 +450,6 @@
         box-shadow: 0 4px 15px rgba(226, 133, 224, 0.3);
         background: var(--secondary-color);
         z-index: 2;
-        transition: box-shadow 0.5s ease;
     }
 
     .work-preview iframe {
@@ -462,49 +461,32 @@
 
     .work-details {
         position: absolute;
-        top: auto; /* Zmieniamy z top: 100% na top: auto */
-        bottom: 0; /* Dodajemy bottom: 0 */
+        bottom: 0;
         left: 0;
-        right: 0;
         width: 100%;
-        padding: 30px 30px;
+        padding: 20px;
         background: linear-gradient(
             to bottom,
-            rgba(37, 37, 37, 0.98) 0%,
-            rgba(37, 37, 37, 0.95) 100%
+            rgba(37, 37, 37, 0.9) 0%,
+            rgba(37, 37, 37, 0.98) 100%
         );
         backdrop-filter: blur(10px);
-        border-radius: 0 0 15px 15px;
-        transform: translateY(100%); /* Zmieniamy z translateY(-15%) na translateY(100%) */
-        opacity: 0;
-        z-index: 1;
-        transition: all 0.5s cubic-bezier(0.33, 1, 0.68, 1);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-        border: 1px solid rgba(226, 133, 224, 0.1);
-        border-top: none;
-    }
-    
-    .work-item:hover {
-        transform: translateY(-5px);
+        transform: translateY(100%);
+        transition: transform 0.3s ease;
+        z-index: 3;
     }
 
-    .work-item:hover .work-preview,
-    .work-item.touched .work-preview {
-        box-shadow: 0 6px 20px rgba(226, 133, 224, 0.4);
-    }
-
-    .work-item:hover .work-details,
-    .work-item.touched .work-details {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    .work-item:last-child {
-        margin-bottom: 180px;
-    }
     .work-item.active .work-details {
-        opacity: 1;
         transform: translateY(0);
+    }
+
+    /* Resetowanie efektów hover dla mobile */
+    .work-item:hover {
+        transform: none;
+    }
+
+    .work-item:hover .work-preview {
+        box-shadow: 0 4px 15px rgba(226, 133, 224, 0.3);
     }
 }
 
@@ -1124,16 +1106,16 @@
             });
         });
         document.addEventListener('DOMContentLoaded', function() {
-    // Sprawdzamy czy urządzenie jest mobilne
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     
     if (isMobile) {
         const workItems = document.querySelectorAll('.work-item');
+        let touchStartY = 0;
+        let touchEndY = 0;
         
         workItems.forEach(item => {
             item.addEventListener('touchstart', function(e) {
-                // Zapobiegamy domyślnej akcji przeglądarki
-                e.preventDefault();
+                touchStartY = e.touches[0].clientY;
                 
                 // Zamykamy wszystkie inne otwarte panele
                 workItems.forEach(otherItem => {
@@ -1145,6 +1127,29 @@
                 // Przełączamy stan aktywny dla klikniętego elementu
                 this.classList.toggle('active');
             });
+            
+            item.addEventListener('touchmove', function(e) {
+                touchEndY = e.touches[0].clientY;
+                const deltaY = touchEndY - touchStartY;
+                
+                // Jeśli użytkownik przewija w dół i panel jest otwarty, zamykamy go
+                if (deltaY > 50 && this.classList.contains('active')) {
+                    this.classList.remove('active');
+                }
+                // Jeśli użytkownik przewija w górę i panel jest zamknięty, otwieramy go
+                else if (deltaY < -50 && !this.classList.contains('active')) {
+                    this.classList.add('active');
+                }
+            });
+        });
+        
+        // Zamykanie panelu przy kliknięciu poza nim
+        document.addEventListener('touchstart', function(e) {
+            if (!e.target.closest('.work-item')) {
+                workItems.forEach(item => {
+                    item.classList.remove('active');
+                });
+            }
         });
     }
 });
