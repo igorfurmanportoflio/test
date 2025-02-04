@@ -426,11 +426,19 @@
 }
 
 @media (max-width: 768px) {
+    .selected-works {
+        grid-template-columns: 1fr;
+        padding: 0 20px;
+        margin: 0;
+    }
+
     .work-item {
         position: relative;
         border-radius: 15px;
-        overflow: hidden;  /* zmienione na hidden żeby panel nie wystawał */
-        margin-bottom: 80px;
+        overflow: visible;
+        margin-bottom: 120px;
+        transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+        min-height: 250px;
     }
 
     .work-preview {
@@ -439,28 +447,45 @@
         aspect-ratio: 16/9;
         border-radius: 15px;
         overflow: hidden;
+        box-shadow: 0 4px 15px rgba(226, 133, 224, 0.3);
+        background: var(--secondary-color);
+        z-index: 2;
+    }
+
+    .work-preview iframe {
+        width: 100%;
+        height: 100%;
+        border-radius: 15px;
+        border: none;
     }
 
     .work-details {
         position: absolute;
+        top: auto;
+        bottom: 0;
         left: 0;
         right: 0;
-        bottom: -100%;  /* panel jest schowany pod spodem */
-        background: rgba(37, 37, 37, 0.98);
-        padding: 20px;
-        transition: bottom 0.3s ease;
+        width: 100%;
+        padding: 30px 30px;
+        background: linear-gradient(
+            to bottom,
+            rgba(37, 37, 37, 0.98) 0%,
+            rgba(37, 37, 37, 0.95) 100%
+        );
+        backdrop-filter: blur(10px);
+        border-radius: 0 0 15px 15px;
+        transform: translateY(100%);
+        opacity: 0;
+        z-index: 1;
+        transition: all 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(226, 133, 224, 0.1);
+        border-top: none;
     }
 
     .work-item.active .work-details {
-        bottom: 0;  /* panel wysuwa się do góry */
-    }
-
-    /* Upewniamy się, że tekst jest od razu widoczny */
-    .work-details h3,
-    .work-details .work-category,
-    .work-details p {
+        transform: translateY(0);
         opacity: 1;
-        transform: none;
     }
 }
 
@@ -1086,15 +1111,16 @@
         const workItems = document.querySelectorAll('.work-item');
         
         workItems.forEach(item => {
-            item.addEventListener('click', function(e) {
-                this.classList.toggle('active');
+            item.addEventListener('touchstart', function(e) {
+                e.preventDefault();
                 
-                // Zamykamy inne panele
                 workItems.forEach(otherItem => {
-                    if (otherItem !== this) {
+                    if (otherItem !== item) {
                         otherItem.classList.remove('active');
                     }
                 });
+                
+                this.classList.toggle('active');
             });
         });
     }
