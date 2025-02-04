@@ -433,16 +433,22 @@
     }
 
     .work-item {
-        margin-bottom: 40px;
+        margin-bottom: 120px; /* Zwiększamy margines na dole */
         position: relative;
-        height: auto;
+        height: 300px;
+    }
+
+    /* Ostatni element w selected-works */
+    .work-item:last-child {
+        margin-bottom: 180px; /* Jeszcze większy margines dla ostatniego elementu */
     }
 
     .work-preview {
-        aspect-ratio: 16/9;
+        position: absolute;
         width: 100%;
-        height: auto;
-        position: relative;
+        height: 100%;
+        top: 0;
+        left: 0;
     }
 
     .work-preview iframe {
@@ -451,12 +457,12 @@
         left: 0;
         width: 100% !important;
         height: 100% !important;
-        border-radius: 15px 15px 0 0;
+        border-radius: 15px;
     }
 
     .work-details {
         position: absolute;
-        bottom: 0;
+        bottom: -120px; /* Przesuwamy panel niżej */
         left: 0;
         width: 100%;
         background: linear-gradient(
@@ -468,6 +474,7 @@
         transform: translateY(100%);
         transition: transform 0.3s ease;
         border-radius: 0 0 15px 15px;
+        z-index: 10;
     }
 
     .work-item.touched .work-details {
@@ -482,8 +489,16 @@
     }
 
     .portfolio-section {
-        padding: 60px 0; /* Zmniejszamy padding sekcji */
-        margin: 0; /* Usuwamy marginesy */
+        padding: 60px 0;
+        margin: 0;
+        background: var(--secondary-color);
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Dodajemy odstęp przed sekcją reels */
+    #reels {
+        padding-top: 40px;
     }
 }
 
