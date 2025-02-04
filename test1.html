@@ -435,7 +435,7 @@
     .work-item {
         position: relative;
         border-radius: 15px;
-        overflow: visible;
+        overflow: hidden;  /* zmienione z visible na hidden aby panel nie wystawał */
         margin-bottom: 120px;
         transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
         min-height: 250px;
@@ -461,7 +461,6 @@
 
     .work-details {
         position: absolute;
-        top: auto;
         bottom: 0;
         left: 0;
         right: 0;
@@ -474,10 +473,9 @@
         );
         backdrop-filter: blur(10px);
         border-radius: 0 0 15px 15px;
-        transform: translateY(100%);
-        opacity: 0;
+        transform: translateY(101%);  /* zmienione ze 100% na 101% aby ukryć cień */
         z-index: 1;
-        transition: all 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+        transition: transform 0.3s ease;  /* uproszczona animacja */
         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
         border: 1px solid rgba(226, 133, 224, 0.1);
         border-top: none;
@@ -485,7 +483,6 @@
 
     .work-item.active .work-details {
         transform: translateY(0);
-        opacity: 1;
     }
 }
 
