@@ -435,8 +435,7 @@
     .work-item {
         margin-bottom: 120px;
         position: relative;
-        min-height: 250px; /* Tak jak w project-example.portfolio-item */
-        max-width: 100%;
+        min-height: 250px;
         margin: 0 auto 120px;
     }
 
@@ -448,25 +447,23 @@
         position: relative;
         width: 100%;
         height: 100%;
-        border-radius: 15px;
-        overflow: hidden;
-        box-shadow: 0 4px 15px rgba(226, 133, 224, 0.3);
-        background: var(--secondary-color);
-        z-index: 2;
-        transition: box-shadow 0.5s ease;
-        aspect-ratio: 16/9; /* Dodajemy proporcje jak w project-example */
+        background: transparent;
+        aspect-ratio: 16/9;
     }
 
     .work-preview iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
         width: 100% !important;
         height: 100% !important;
         border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(226, 133, 224, 0.3);
+        transition: box-shadow 0.5s ease;
     }
 
-    /* Reszta styli pozostaje bez zmian */
+    .work-item:hover .work-preview iframe,
+    .work-item.touched .work-preview iframe {
+        box-shadow: 0 6px 20px rgba(226, 133, 224, 0.4);
+    }
+
     .work-details {
         position: absolute;
         bottom: -120px;
@@ -485,16 +482,6 @@
         z-index: 10;
         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
         border: 1px solid rgba(226, 133, 224, 0.1);
-    }
-
-    .work-item:hover,
-    .work-item.touched {
-        transform: translateY(-5px);
-    }
-
-    .work-item:hover .work-preview,
-    .work-item.touched .work-preview {
-        box-shadow: 0 6px 20px rgba(226, 133, 224, 0.4);
     }
 
     .work-item.touched .work-details {
