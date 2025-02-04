@@ -435,7 +435,9 @@
     .work-item {
         margin-bottom: 120px;
         position: relative;
-        height: 300px;
+        min-height: 250px; /* Tak jak w project-example.portfolio-item */
+        max-width: 100%;
+        margin: 0 auto 120px;
     }
 
     .work-item:last-child {
@@ -452,6 +454,7 @@
         background: var(--secondary-color);
         z-index: 2;
         transition: box-shadow 0.5s ease;
+        aspect-ratio: 16/9; /* Dodajemy proporcje jak w project-example */
     }
 
     .work-preview iframe {
@@ -463,6 +466,7 @@
         border-radius: 15px;
     }
 
+    /* Reszta styli pozostaje bez zmian */
     .work-details {
         position: absolute;
         bottom: -120px;
