@@ -434,11 +434,7 @@
 
     .work-item {
         position: relative;
-        border-radius: 15px;
-        overflow: visible;
-        margin-bottom: 120px;
-        transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
-        min-height: 250px;
+        margin-bottom: 100px; /* Zwiększamy odstęp między elementami */
     }
 
     .work-preview {
@@ -447,10 +443,6 @@
         aspect-ratio: 16/9;
         border-radius: 15px;
         overflow: hidden;
-        box-shadow: 0 4px 15px rgba(226, 133, 224, 0.3);
-        background: var(--secondary-color);
-        z-index: 2;
-        transition: box-shadow 0.5s ease;
     }
 
     .work-preview iframe {
@@ -462,26 +454,22 @@
 
     .work-details {
         position: absolute;
-        top: auto; /* Zmieniamy z top: 100% na top: auto */
-        bottom: 0; /* Dodajemy bottom: 0 */
+        bottom: 0;
         left: 0;
         right: 0;
         width: 100%;
-        padding: 30px 30px;
+        transform: translateY(100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
         background: linear-gradient(
             to bottom,
             rgba(37, 37, 37, 0.98) 0%,
             rgba(37, 37, 37, 0.95) 100%
         );
-        backdrop-filter: blur(10px);
+        z-index: 10;
+        padding: 20px;
         border-radius: 0 0 15px 15px;
-        transform: translateY(100%); /* Zmieniamy z translateY(-15%) na translateY(100%) */
-        opacity: 0;
-        z-index: 1;
-        transition: all 0.5s cubic-bezier(0.33, 1, 0.68, 1);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-        border: 1px solid rgba(226, 133, 224, 0.1);
-        border-top: none;
     }
     
     .work-item:hover {
@@ -503,8 +491,15 @@
         margin-bottom: 180px;
     }
     .work-item.active .work-details {
-        opacity: 1;
         transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+    }
+    .work-item.active .work-details h3,
+    .work-item.active .work-details .work-category,
+    .work-item.active .work-details p {
+        transform: translateY(0);
+        opacity: 1;
     }
 }
 
@@ -551,6 +546,27 @@
 .work-item:hover .work-details p {
     transform: translateY(0);
     opacity: 1;
+}
+@media (max-width: 768px) {
+    .work-preview::after {
+        content: '';
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        width: 30px;
+        height: 30px;
+        background: rgba(226, 133, 224, 0.8);
+        border-radius: 50%;
+        pointer-events: none;
+        opacity: 0.8;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); opacity: 0.8; }
+        50% { transform: scale(1.2); opacity: 0.4; }
+        100% { transform: scale(1); opacity: 0.8; }
+    }
 }
 
 @media (max-width: 480px) {
@@ -1124,27 +1140,42 @@
             });
         });
         document.addEventListener('DOMContentLoaded', function() {
-    // Sprawdzamy czy urządzenie jest mobilne
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    
-    if (isMobile) {
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         const workItems = document.querySelectorAll('.work-item');
-        
-        workItems.forEach(item => {
-            item.addEventListener('touchstart', function(e) {
-                // Zapobiegamy domyślnej akcji przeglądarki
-                e.preventDefault();
-                
-                // Zamykamy wszystkie inne otwarte panele
-                workItems.forEach(otherItem => {
-                    if (otherItem !== item) {
-                        otherItem.classList.remove('active');
-                    }
-                });
-                
-                // Przełączamy stan aktywny dla klikniętego elementu
-                this.classList.toggle('active');
+        let activeItem = null;
+
+        // Funkcja zamykająca wszystkie panele oprócz wybranego
+        function closeOtherPanels(currentItem) {
+            workItems.forEach(item => {
+                if (item !== currentItem) {
+                    item.classList.remove('active');
+                }
             });
+        }
+
+        workItems.forEach(item => {
+            const preview = item.querySelector('.work-preview');
+            
+            preview.addEventListener('touchstart', function(e) {
+                e.preventDefault(); // Zapobiegamy domyślnym akcjom
+                
+                if (item.classList.contains('active')) {
+                    item.classList.remove('active');
+                    activeItem = null;
+                } else {
+                    closeOtherPanels(item);
+                    item.classList.add('active');
+                    activeItem = item;
+                }
+            });
+        });
+
+        // Zamykanie panelu przy dotknięciu poza elementem
+        document.addEventListener('touchstart', function(e) {
+            if (activeItem && !activeItem.contains(e.target)) {
+                activeItem.classList.remove('active');
+                activeItem = null;
+            }
         });
     }
 });
