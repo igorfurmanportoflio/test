@@ -433,14 +433,17 @@
     }
 
     .work-item {
-        margin-bottom: 120px; /* Zwiększamy margines na dole */
+        margin-bottom: 120px;
         position: relative;
         height: 300px;
+        border-radius: 15px;
+        overflow: visible;
+        transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+        box-shadow: 0 4px 15px rgba(226, 133, 224, 0.3);
     }
 
-    /* Ostatni element w selected-works */
     .work-item:last-child {
-        margin-bottom: 180px; /* Jeszcze większy margines dla ostatniego elementu */
+        margin-bottom: 180px;
     }
 
     .work-preview {
@@ -449,6 +452,10 @@
         height: 100%;
         top: 0;
         left: 0;
+        background: var(--secondary-color);
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(226, 133, 224, 0.3);
     }
 
     .work-preview iframe {
@@ -462,7 +469,7 @@
 
     .work-details {
         position: absolute;
-        bottom: -120px; /* Przesuwamy panel niżej */
+        bottom: -120px;
         left: 0;
         width: 100%;
         background: linear-gradient(
@@ -470,11 +477,14 @@
             rgba(37, 37, 37, 0.98) 0%,
             rgba(37, 37, 37, 0.95) 100%
         );
+        backdrop-filter: blur(10px);
         padding: 20px;
         transform: translateY(100%);
         transition: transform 0.3s ease;
-        border-radius: 0 0 15px 15px;
+        border-radius: 15px;
         z-index: 10;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(226, 133, 224, 0.1);
     }
 
     .work-item.touched .work-details {
@@ -496,7 +506,6 @@
         z-index: 2;
     }
 
-    /* Dodajemy odstęp przed sekcją reels */
     #reels {
         padding-top: 40px;
     }
