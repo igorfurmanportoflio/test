@@ -479,24 +479,25 @@
         transform: translateY(0);
     }
 
-    .work-details h3 {
-        font-size: 0.8rem;  /* zmniejszone z 1.5rem */
-        margin-bottom: 5px; /* zmniejszone z 12px */
-    }
     .work-details {
-        padding: 15x;      /* zmniejszone z 30px 30px */
-    } 
-    .work-category {
-        font-size: 0.5rem;  /* zmniejszone z 0.9rem */
-        margin-bottom: 5px; /* zmniejszone z 12px */
-        padding: 3px 8px;   /* zmniejszone padding */
+        padding: 12px 15px;  /* zmniejszony padding z 20px */
     }
+
+    .work-details h3 {
+        font-size: 1rem;    /* jeszcze mniejsza czcionka */
+        margin-bottom: 4px; /* mniejszy odstęp */
+    }
+
+    .work-category {
+        font-size: 0.75rem; /* mniejsza czcionka */
+        margin-bottom: 4px; /* mniejszy odstęp */
+        padding: 2px 6px;   /* mniejszy padding dla badge */
+    }
+
     .work-details p {
-        transform: translateY(-8px);
-        opacity: 0;
-        transition: all 0.4s cubic-bezier(0.33, 1, 0.68, 1);
-        font-size: 0.8rem;  /* zmniejszone z 1rem */
-        line-height: 1.0;   /* zmniejszone z 1.7 */
+        font-size: 0.8rem;  /* mniejsza czcionka */
+        line-height: 1.4;   /* mniejsza wysokość linii */
+        margin-bottom: 0;   /* usunięty margines na dole */
     }
 
     .work-item.active .work-details h3,
