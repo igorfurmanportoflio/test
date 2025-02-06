@@ -780,11 +780,11 @@
 /* Details Panel */
 .reel-details {
     position: absolute;
-    top: 100%;
+    top: 95%;
     left: 0;
     right: 0;
     width: 100%;
-    padding: 25px;
+    padding: 70px 30px 30px 30px;
     background: linear-gradient(
         to bottom,
         rgba(37, 37, 37, 0.98) 0%,
@@ -795,6 +795,7 @@
     transform: translateY(-15%);
     opacity: 0;
     z-index: 1;
+    margin-top: -15px;
     transition: all 0.5s cubic-bezier(0.33, 1, 0.68, 1);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
     border: 1px solid rgba(226, 133, 224, 0.1);
@@ -819,9 +820,9 @@
 /* Content Styling */
 .reel-details h4 {
     color: #fff;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-weight: 600;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     transform: translateY(-8px);
     opacity: 0;
     transition: all 0.4s cubic-bezier(0.33, 1, 0.68, 1) 0.1s;
@@ -830,23 +831,23 @@
 .reel-category {
     display: inline-block;
     color: var(--accent-color);
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     font-weight: 500;
     text-transform: uppercase;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
     transform: translateY(-8px);
     opacity: 0;
     transition: all 0.4s cubic-bezier(0.33, 1, 0.68, 1) 0.2s;
     letter-spacing: 1px;
-    padding: 3px 10px;
+    padding: 4px 12px;
     background: rgba(226, 133, 224, 0.1);
     border-radius: 20px;
 }
 
 .reel-details p {
     color: rgba(255, 255, 255, 0.9);
-    font-size: 0.9rem;
-    line-height: 1.6;
+    font-size: 1rem;
+    line-height: 1.7;
     transform: translateY(-8px);
     opacity: 0;
     transition: all 0.4s cubic-bezier(0.33, 1, 0.68, 1) 0.3s;
@@ -911,6 +912,13 @@
         gap: 20px;
         padding: 0 20px;
         margin: 0 20px;
+    }
+    .reel-item {
+        margin-bottom: 120px;
+    }
+
+    .reel-details {
+        padding: 50px 15px 12px 15px;
     }
 }
 
