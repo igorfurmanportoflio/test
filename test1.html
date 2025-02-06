@@ -177,7 +177,16 @@
         .portfolio-section {
             padding: 120px 4vw;
             background: var(--secondary-color);
+            margin: 0; /* dodajemy to */
         }
+        /* Selected Works - Grid Layout */
+.selected-works {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    padding: 0 40px;
+    margin: 0 40px;
+}
 
         .section-title {
             font-size: 3.5rem;
@@ -571,6 +580,10 @@
             gap: 20px;
             padding: 0 40px;
         }
+        #reels {
+    padding-top: 100px;
+    margin-top: 0;
+}
 
         .reel-item {
             aspect-ratio: 9/16;
