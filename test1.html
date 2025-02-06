@@ -14,6 +14,21 @@
             --text-color: #ffffff;
             --secondary-color: #333333;
         }
+       
+    /* Efekty hover */
+    .work-preview,
+    .reel-preview,
+    .project-main-image,
+    .project-example {
+        transform: scale(1);
+        transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .work-item:hover,
+.reel-item:hover,
+.project-example:hover {
+    transform: scale(1.02);
+}
 
         * {
             margin: 0;
@@ -1108,22 +1123,6 @@
             ease: 'power3.out'
         });
 
-        // Animacja elementów portfolio przy scrollowaniu
-        gsap.utils.toArray('.portfolio-item').forEach(item => {
-    if (!item.classList.contains('project-example')) { // Dodajemy ten warunek
-        gsap.to(item, {
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            scrollTrigger: {
-                trigger: item,
-                start: 'top bottom-=100',
-                toggleActions: 'play none none reverse'
-            }
-        });
-    }
-});
-
         // Płynne przewijanie do sekcji
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -1336,6 +1335,52 @@
     const opacity = Math.min(scrollPosition / window.innerHeight, 1);
     overlay.style.opacity = opacity;
 });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    // Animacja dla większych projektów
+    gsap.from('.major-project', {
+        y: 50,
+        opacity: 0,
+        duration: 1,
+        scrollTrigger: {
+            trigger: '.major-project',
+            start: 'top bottom-=100',
+            toggleActions: 'play none none reverse'
+        }
+    });
+
+    // Animacja dla wybranych realizacji
+    gsap.utils.toArray('.work-item').forEach((item, i) => {
+        gsap.from(item, {
+            y: 50,
+            opacity: 0,
+            duration: 1,
+            delay: i * 0.2,
+            scrollTrigger: {
+                trigger: item,
+                start: 'top bottom-=100',
+                toggleActions: 'play none none reverse'
+            }
+        });
+    });
+
+    // Animacja dla rolek
+    gsap.utils.toArray('.reel-item').forEach((item, i) => {
+        gsap.from(item, {
+            y: 50,
+            opacity: 0,
+            duration: 1,
+            delay: i * 0.2,
+            scrollTrigger: {
+                trigger: item,
+                start: 'top bottom-=100',
+                toggleActions: 'play none none reverse'
+            }
+        });
+    });
+});
+
 </script>
 </body>
 </html>
