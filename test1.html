@@ -779,7 +779,7 @@
     left: 0;
     right: 0;
     width: 100%;
-    padding: 70px 30px 30px 30px;
+    padding: 50px 30px 30px 30px;
     background: linear-gradient(
         to bottom,
         rgba(37, 37, 37, 0.98) 0%,
@@ -797,22 +797,6 @@
     border-top: none;
 }
 
-/* Hover Effects */
-.reel-item:hover {
-    transform: translateY(-5px);
-}
-
-.reel-item:hover .reel-preview img,
-.reel-item:hover .reel-preview video {
-    transform: scale(1.05);
-}
-
-.reel-item:hover .reel-details {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Content Styling */
 .reel-details h4 {
     color: #fff;
     font-size: 1.5rem;
@@ -908,13 +892,48 @@
         padding: 0 20px;
         margin: 0 20px;
     }
+
     .reel-item {
         margin-bottom: 120px;
     }
 
     .reel-details {
-        padding: 50px 15px 12px 15px;
+        padding: 35px 15px 12px 15px;
+        padding-bottom: 25px;
     }
+
+    .reel-details h4 {
+        font-size: 1.1rem !important;
+        margin-bottom: 6px !important;
+        line-height: 1.2;
+    }
+
+    .reel-category {
+        font-size: 0.8rem !important;
+        margin-bottom: 6px !important;
+        padding: 2px 8px;
+        line-height: 1.2;
+    }
+
+    .reel-details p {
+        font-size: 0.75rem !important;
+        line-height: 1.4;
+        margin: 4px 0;
+        padding: 0;
+    }
+}
+
+/* Efekty hover */
+.reel-item:hover .reel-details {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.reel-item:hover .reel-details h4,
+.reel-item:hover .reel-details .reel-category,
+.reel-item:hover .reel-details p {
+    transform: translateY(0);
+    opacity: 1;
 }
 
 @media (max-width: 480px) {
