@@ -2,8 +2,6 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Film Portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
@@ -951,47 +949,52 @@
         grid-template-columns: repeat(1, 1fr);
     }
 }
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-    .hero-title {
-        font-size: calc(5rem * 0.8);
-        letter-spacing: 4px;
-    }
-    
-    .hero-subtitle {
-        font-size: calc(1.5rem * 0.8);
-    }
-    
-    .section-title {
-        font-size: calc(3.5rem * 0.8);
-    }
-}
+/* MacBook-specific optimizations */
+@media screen and (min-aspect-ratio: 16/9) {
+            .parallax-wrapper {
+                height: 100vh;
+                min-height: 600px;
+            }
 
-/* Breakpoints dla MacBooków */
-@media screen and (min-width: 2560px) {
-    .selected-works {
-        grid-template-columns: repeat(5, 1fr);
-        gap: 40px;
-    }
-    
-    .project-examples {
-        grid-template-columns: repeat(5, 1fr);
-    }
-}
+            .hero-content {
+                padding-top: 0;
+            }
 
-@media screen and (min-width: 3024px) {
-    .container {
-        max-width: 2800px;
-        margin: 0 auto;
-    }
-}
+            .work-preview {
+                max-height: 60vh;
+            }
+        }
 
-/* Optymalizacja dla MacBook Pro */
-@supports (-webkit-backdrop-filter: none) {
-    .navbar {
-        -webkit-backdrop-filter: saturate(180%) blur(20px);
-        backdrop-filter: saturate(180%) blur(20px);
-    }
-}
+        /* Specific MacBook Pro resolutions */
+        @media screen and (min-width: 1280px) and (max-width: 1440px) and (min-height: 800px) and (max-height: 900px) {
+            .selected-works {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .reels-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .portfolio-section {
+                padding: 80px 3vw;
+            }
+        }
+
+        /* Mobile optimizations */
+        @media screen and (max-width: 768px) {
+            .hero-content {
+                padding-top: 80px;
+            }
+
+            .selected-works, .reels-grid {
+                grid-template-columns: 1fr;
+                padding: 0 15px;
+            }
+
+            .work-item, .reel-item {
+                margin-bottom: 60px;
+            }
+        }
     </style>
 </head>
 <body>
