@@ -207,12 +207,13 @@
 
 @media (max-width: 768px) {
     .major-project .project-examples {
-       grid-template-columns: 1fr;
+        grid-template-columns: 1fr;
        gap: 20px;
-       padding: 0 20px;
-       margin: 0;
        width: 90%;
        margin: 0 auto;
+       display: flex;
+       flex-direction: column;
+       align-items: center;
    }
     
    .major-project .project-example.portfolio-item {
@@ -221,11 +222,9 @@
        overflow: visible;
        margin-bottom: 120px;
        width: 90%;
-       margin-left: auto;
-       margin-right: auto;
    }
    .major-project .project-example iframe {
-       width: 100%;
+    width: 100%;
        aspect-ratio: 1/1;
        border-radius: 15px;
        border: none;
