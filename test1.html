@@ -409,6 +409,15 @@
     transition: all 0.4s cubic-bezier(0.33, 1, 0.68, 1) 0.3s;
     margin-bottom: 0;
 }
+.work-details {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    width: 100%;
+    padding: 35px 15px 12px 15px;
+    touch-action: pan-y pinch-zoom;
+}
 
 .work-item:hover .work-details h3,
 .work-item:hover .work-details .work-category,
@@ -1241,6 +1250,9 @@
             let isSwiping = false;
 
             item.addEventListener('touchstart', function(e) {
+                if (e.target.closest('.work-details')) {
+                    return;
+                }
                 touchStartY = e.touches[0].clientY;
                 isSwiping = false;
             }, { passive: true });
