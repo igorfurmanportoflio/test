@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Film Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #252525;
+            --accent-color: #e285e0;
+            --text-color: #ffffff;
+            --secondary-color: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+    overflow-x: hidden;
+    width: 100%;
+}
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        .overlay-scroll {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 25vh;
+    background: linear-gradient(
+        to bottom,
+        rgba(37, 37, 37, 0),
+        rgba(37, 37, 37, 1)
+    );
+    pointer-events: none;
+    z-index: 3;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 2rem;
+            height: 2rem;
+            position: fixed;
+            top: 0rem;
+            right: 1rem;
+            z-index: 1001;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            padding: 0;
+        }
+
+        .hamburger span {
+            width: 2rem;
+            height: 0.25rem;
+            background: var(--text-color);
+            border-radius: 10px;
+            transition: all 0.3s linear;
+            transform-origin: 1px;
+        }
+
+        .hamburger.active span:first-child {
+            transform: rotate(45deg);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg);
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            width: 100%;
+            padding: 1.5rem;
+            background: rgba(37, 37, 37, 0.95);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section with Parallax */
+        .parallax-wrapper {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    perspective: 2px;
+}
+
+        .parallax-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%;
+            background: linear-gradient(135deg, rgba(0,0,0,0.7), rgba(226,133,224,0.2)), 
+                        url('file:///C:/Users/Igor/Downloads/film-portfolio-background.svg') center/cover no-repeat;
+            transform: translateZ(-1px) scale(2);
+            z-index: -1;
+        }
+
+        .hero-content {
+    position: relative; /* zmiana z absolute na relative */
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+    width: 100%;
+    padding: 0 20px;
+    z-index: 2;
+}
+
+        .hero-title {
+            font-size: 5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    color: #ffffff;
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255, 0.8),
+        0 0 20px rgba(255, 255, 255, 0.6),
+        0 0 30px rgba(255, 255, 255, 0.4),
+        0 0 40px rgba(255, 255, 255, 0.2);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUp 0.8s ease forwards 0.8s;
+}
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+    margin-top: 1rem;
+    color: rgba(255,255,255,0.9);
+    text-shadow: 
+        0 0 5px rgba(255, 255, 255, 0.6),
+        0 0 10px rgba(255, 255, 255, 0.4),
+        0 0 15px rgba(255, 255, 255, 0.2);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUp 0.8s ease forwards 1s;
+}
+
+        /* Portfolio Sections */
+        .portfolio-section {
+            padding: 120px 4vw;
+            background: var(--secondary-color);
+            margin: 0; /* dodajemy to */
+        }
+        /* Selected Works - Grid Layout */
+.selected-works {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    padding: 0 40px;
+    margin: 0 40px;
+}
+
+        .section-title {
+            font-size: 3.5rem;
+            margin-bottom: 4rem;
+            text-align: center;
+            color: var(--accent-color);
+        }
+
+        /* Major Projects */
+.major-project {
+    margin-bottom: 150px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 4px 8px rgba(226, 133, 224, 0.5), 0 6px 20px rgba(226, 133, 224, 0.3);
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .major-project {
+        padding: 20px;
+        margin-bottom: 80px;
+    }
+    
+    .project-examples {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .project-example.portfolio-item {
+        min-height: 250px;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    
+    .portfolio-section {
+        padding: 60px 15px;
+    }
+}
+
+        .major-project-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .project-description {
+            padding: 20px;
+        }
+
+        .project-description h3 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .project-description p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .project-main-image {
+            width: 100%;
+            height: 400px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .project-main-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .project-examples {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.project-example.portfolio-item {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    aspect-ratio: 16/9;
+    min-height: 200px;
+    transform: translateY(0);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-example.portfolio-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(27, 16, 27, 0.5);
+}
+
+/* Selected Works - Grid Layout */
+.selected-works {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    padding: 0 40px;
+    margin: 0 40px;
+}
+
+/* Work Item - Container */
+.work-item {
+    position: relative;
+    border-radius: 15px;
+    overflow: visible;
+    margin-bottom: 80px;
+    transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1); /* Bardziej płynna animacja */
+}
+
+
+.work-item:hover {
+    transform: translateY(-5px);
+}
+
+/* Video Preview Container */
+.work-preview {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(226, 133, 224, 0.3);
+    background: var(--secondary-color);
+    z-index: 2;
+    transition: box-shadow 0.5s ease; /* Płynna zmiana cienia */
+}
+
+.work-preview iframe {
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    border: none;
+}
+
+/* Details Overlay */
+.work-details {
+    position: absolute;
+    top: 95%;
+    left: 0;
+    right: 0;
+    width: 100%;
+    padding: 50px 30px 30px 30px;
+    background: linear-gradient(
+        to bottom,
+        rgba(37, 37, 37, 0.98) 0%,
+        rgba(37, 37, 37, 0.95) 100%
+    );
+    backdrop-filter: blur(10px);
+    border-radius: 0 0 15px 15px;
+    transform: translateY(-15%); /* Delikatniejsze początkowe przesunięcie */
+    opacity: 0;
+    z-index: 1;
+    margin-top: -15px; /* Dodane, żeby panel zachodził wyżej */
+    transition: all 0.5s cubic-bezier(0.33, 1, 0.68, 1); /* Bardziej płynna animacja */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(226, 133, 224, 0.1);
+    border-top: none;
+}
+
+/* Hover Effect */
+.work-item:hover {
+    transform: translateY(-5px);
+}
+
+.work-item:hover .work-preview {
+    box-shadow: 0 6px 20px rgba(226, 133, 224, 0.4); /* Mocniejszy cień przy hover */
+}
+
+.work-item:hover .work-details {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Content Animations */
+.work-details h3 {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    transform: translateY(-8px); /* Delikatniejsze przesunięcie */
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.33, 1, 0.68, 1) 0.1s; /* Płynniejsza animacja z opóźnieniem */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.work-category {
+    display: inline-block;
+    color: var(--accent-color);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    transform: translateY(-8px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.33, 1, 0.68, 1) 0.2s;
+    letter-spacing: 1px;
+    padding: 4px 12px;
+    background: rgba(226, 133, 224, 0.1);
+    border-radius: 20px;
+}
+
+.work-details p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    line-height: 1.7;
+    transform: translateY(-8px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.33, 1, 0.68, 1) 0.3s;
+    margin-bottom: 0;
+}
+
+.work-item:hover .work-details h3,
+.work-item:hover .work-details .work-category,
+.work-item:hover .work-details p {
+    transform: translateY(0);
+    opacity: 1;
+}
+.portfolio-section {
+    position: relative;
+    z-index: 2;
+    background: var(--secondary-color);
+}
+
+#clouds-canvas {
+    height: 100vh;
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .selected-works {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .selected-works {
+        grid-template-columns: 1fr;
+        padding: 0 20px;
+        margin: 0;
+    }
+
+    .work-item {
+        position: relative;
+        border-radius: 15px;
+        overflow: visible;
+        margin-bottom: 120px;
+    }
+
+    .work-preview {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16/9;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(226, 133, 224, 0.3);
+        background: var(--secondary-color);
+        z-index: 2;
+    }
+
+    .work-details {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        width: 100%;
+        padding: 35px 15px 12px 15px;
+        background: linear-gradient(
+            to bottom,
+            rgba(37, 37, 37, 0.98) 0%,
+            rgba(37, 37, 37, 0.95) 100%
+        );
+        backdrop-filter: blur(10px);
+        border-radius: 0 0 15px 15px;
+        transform: translateY(-15%);
+        opacity: 0;
+        z-index: 1;
+        transition: all 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(226, 133, 224, 0.1);
+        border-top: none;
+        padding-bottom: 25px;
+        border-radius: 0 0 15px 15px;
+    }
+
+    .work-details h3 {
+        font-size: 1.1rem !important;
+        margin-bottom: 6px !important;
+        line-height: 1.2;
+    }
+
+    .work-category {
+        font-size: 0.8rem !important;
+        margin-bottom: 6px !important;
+        padding: 2px 8px;
+        line-height: 1.2;
+    }
+
+    .work-details p {
+        font-size: 0.75rem !important;
+        line-height: 1.4;
+        margin: 4px 0;
+        padding: 0;
+    }
+
+    .work-item.active .work-details {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .work-item.active .work-details h3,
+    .work-item.active .work-details .work-category,
+    .work-item.active .work-details p {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+
+.work-details h3 {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    transform: translateY(-10px);
+    opacity: 0;
+    transition: all 0.3s ease 0.1s;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.work-category {
+    display: inline-block;
+    color: var(--accent-color);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    transform: translateY(-10px);
+    opacity: 0;
+    transition: all 0.3s ease 0.2s;
+    letter-spacing: 1px;
+    padding: 4px 12px;
+    background: rgba(226, 133, 224, 0.1);
+    border-radius: 20px;
+}
+
+.work-details p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    line-height: 1.7;
+    transform: translateY(-10px);
+    opacity: 0;
+    transition: all 0.3s ease 0.3s;
+    margin-bottom: 0;
+}
+
+.work-item:hover .work-details h3,
+.work-item:hover .work-details .work-category,
+.work-item:hover .work-details p {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+@media (max-width: 480px) {
+    .selected-works {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+        /* Reels */
+        .reels-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            padding: 0 40px;
+        }
+        #reels {
+    padding-top: 100px;
+    margin-top: 0;
+}
+
+        .reel-item {
+            aspect-ratio: 9/16;
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        /* Common Portfolio Item Styles */
+        .portfolio-item {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .portfolio-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .portfolio-item:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Dla Większe Projekty */
+        .portfolio-item-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    background: linear-gradient(rgba(0,0,0,0.9), transparent);
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+}
+
+.portfolio-item:hover .portfolio-item-content {
+    transform: translateY(0);
+}
+
+        #clouds-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh; /* zmiana z 100% na 100vh */
+    z-index: -1;
+}
+        .parallax-wrapper {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+
+        @media (max-width: 1200px) {
+            .project-examples {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .selected-works, .reels-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 100%;
+                max-width: 300px;
+                flex-direction: column;
+                justify-content: center;
+                gap: 2rem;
+                background: rgba(37, 37, 37, 0.98);
+                backdrop-filter: blur(10px);
+                transition: right 0.3s ease;
+                padding: 2rem;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links a {
+                font-size: 1.2rem;
+                text-align: center;
+            }
+
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .major-project-header {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 2rem;
+                margin-bottom: 2rem;
+            }
+
+            .portfolio-section {
+                padding: 60px 2vw;
+            }
+
+            .selected-works, .reels-grid {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 0 15px;
+            }
+            
+            .parallax-wrapper {
+    height: 100vh;
+    perspective: none;
+    overflow: hidden;
+}
+    
+#clouds-canvas {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    object-fit: cover;
+    transform: scale(1.1);
+    pointer-events: none;
+}
+    
+    .hero-content {
+        padding-top: 100px;
+    }
+}
+
+        @media (max-width: 480px) {
+            .project-examples {
+                grid-template-columns: 1fr;
+            }
+            .selected-works, .reels-grid {
+                grid-template-columns: 1fr;
+            }
+            .portfolio-section {
+                padding: 40px 15px;
+            }
+            .project-main-image {
+                height: 300px;
+            }
+        }
+        /* Reels Grid Layout */
+.reels-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 25px;
+    padding: 0 40px;
+    margin: 0 40px;
+}
+
+/* Reel Item Container */
+.reel-item {
+    position: relative;
+    aspect-ratio: 9/16;
+    border-radius: 15px;
+    overflow: visible;
+    transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+    margin-bottom: 40px;
+}
+
+/* Reel Preview */
+.reel-preview {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(226, 133, 224, 0.3);
+    z-index: 2;
+}
+
+.reel-preview img,
+.reel-preview video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+    transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+/* Details Panel */
+.reel-details {
+    position: absolute;
+    top: 95%;
+    left: 0;
+    right: 0;
+    width: 100%;
+    padding: 70px 30px 30px 30px;
+    background: linear-gradient(
+        to bottom,
+        rgba(37, 37, 37, 0.98) 0%,
+        rgba(37, 37, 37, 0.95) 100%
+    );
+    backdrop-filter: blur(10px);
+    border-radius: 0 0 15px 15px;
+    transform: translateY(-15%);
+    opacity: 0;
+    z-index: 1;
+    margin-top: -15px;
+    transition: all 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(226, 133, 224, 0.1);
+    border-top: none;
+}
+
+.reel-details h4 {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    transform: translateY(-8px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.33, 1, 0.68, 1) 0.1s;
+}
+
+.reel-category {
+    display: inline-block;
+    color: var(--accent-color);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    transform: translateY(-8px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.33, 1, 0.68, 1) 0.2s;
+    letter-spacing: 1px;
+    padding: 4px 12px;
+    background: rgba(226, 133, 224, 0.1);
+    border-radius: 20px;
+}
+
+.reel-details p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    line-height: 1.7;
+    transform: translateY(-8px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.33, 1, 0.68, 1) 0.3s;
+    margin-bottom: 0;
+}
+
+.reel-item:hover .reel-details h4,
+.reel-item:hover .reel-details .reel-category,
+.reel-item:hover .reel-details p {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Play Button Overlay */
+.reel-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    width: 60px;
+    height: 60px;
+    background: rgba(226, 133, 224, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.4s ease;
+}
+
+.reel-play:after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 0 10px 20px;
+    border-color: transparent transparent transparent white;
+    margin-left: 5px;
+}
+
+.reel-item:hover .reel-play {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+    .reels-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 1200px) {
+    .reels-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .reels-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        padding: 0 20px;
+        margin: 0 20px;
+    }
+
+    .reel-item {
+        margin-bottom: 120px;
+    }
+
+    .reel-details {
+        position: absolute;
+        top: 100%; /* Zmieniona pozycja top */
+        padding: 45px 30px; /* Dostosowany padding */
+        transform: translateY(-15%);
+        margin-top: -15px;
+        padding-bottom: 25px;
+    }
+
+    .reel-details h4 {
+        font-size: 1.1rem !important;
+        margin-bottom: 6px !important;
+        line-height: 1.2;
+    }
+
+    .reel-category {
+        font-size: 0.8rem !important;
+        margin-bottom: 6px !important;
+        padding: 2px 8px;
+        line-height: 1.2;
+    }
+
+    .reel-details p {
+        font-size: 0.75rem !important;
+        line-height: 1.4;
+        margin: 4px 0;
+        padding: 0;
+    }
+}
+
+/* Efekty hover */
+.reel-item:hover .reel-details {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.reel-item:hover .reel-details h4,
+.reel-item:hover .reel-details .reel-category,
+.reel-item:hover .reel-details p {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+@media (max-width: 480px) {
+    .reels-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+/* MacBook-specific optimizations */
+@media screen and (min-aspect-ratio: 16/9) {
+            .parallax-wrapper {
+                height: 100vh;
+                min-height: 600px;
+            }
+
+            .hero-content {
+                padding-top: 0;
+            }
+
+            .work-preview {
+                max-height: 60vh;
+            }
+        }
+
+        /* Specific MacBook Pro resolutions */
+        @media screen and (min-width: 1280px) and (max-width: 1440px) and (min-height: 800px) and (max-height: 900px) {
+            .selected-works {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .reels-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .portfolio-section {
+                padding: 80px 3vw;
+            }
+        }
+
+        /* Mobile optimizations */
+        @media screen and (max-width: 768px) {
+            .hero-content {
+                padding-top: 80px;
+            }
+
+            .selected-works, .reels-grid {
+                grid-template-columns: 1fr;
+                padding: 0 15px;
+            }
+
+            .work-item, .reel-item {
+                margin-bottom: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <nav class="navbar">
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#major-projects">WIĘKSZE PROJEKTY</a>
+            <a href="#selected-works">WYBRANE REALIZACJE</a>
+            <a href="#reels">PRZYKŁADOWE ROLKI</a>
+        </div>
+    </nav>
+
+    <section id="home" class="parallax-wrapper">
+        <canvas id="clouds-canvas"></canvas>
+        <div class="hero-content">
+            <h1 class="hero-title">Film Portfolio</h1>
+            <p class="hero-subtitle">Tworzę wyjątkowe historie poprzez obraz</p>
+        </div>
+        <div class="overlay-scroll"></div> 
+    </section>
+
+    <section id="major-projects" class="portfolio-section">
+        <h2 class="section-title">WIĘKSZE PROJEKTY</h2>
+        <div class="major-project">
+            <div class="major-project-header">
+                <div class="project-description">
+                    <h3>Nazwa Projektu</h3>
+                    <p>Szczegółowy opis projektu. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                       Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                </div>
+                <div class="project-main-image">
+                    <img src="https://maturalni.com/wp-content/uploads/2023/10/cropped-maturalni-poziom.png" alt="Główne zdjęcie projektu">
+                </div>
+            </div>
+            <div class="project-examples">
+                <div class="project-example portfolio-item">        
+                    <iframe 
+                        src="https://player.vimeo.com/video/338844163?h=f54fb060de&badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0&controls=1&background=0&transparent=0&responsive=1&controls=1&dnt=1&playsinline=1" 
+                        style="width: 100%; height: 100%; border-radius: 10px; background: #000;"
+                        frameborder="0" 
+                        allow="autoplay; fullscreen; picture-in-picture" 
+                        allowfullscreen
+                        playsinline
+                        webkitplaysinline
+                        webkitallowfullscreen 
+                        mozallowfullscreen>
+                    </iframe>
+                    <div class="portfolio-item-content">
+                        <h4>Scena 1</h4>
+                        <p>Opis sceny</p>
+                    </div>
+                </div>
+                <div class="project-example portfolio-item">
+                    <iframe 
+                        src="https://player.vimeo.com/video/338844163?h=f54fb060de&badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0" 
+                        style="width: 100%; height: 100%; border-radius: 10px;"
+                        frameborder="0" 
+                        allow="autoplay; fullscreen; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                    <div class="portfolio-item-content">
+                        <h4>Scena 2</h4>
+                        <p>Opis sceny</p>
+                    </div>
+                </div>
+                <div class="project-example portfolio-item">
+                    <iframe 
+                        src="https://player.vimeo.com/video/338844163?h=f54fb060de&badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0" 
+                        style="width: 100%; height: 100%; border-radius: 10px;"
+                        frameborder="0" 
+                        allow="autoplay; fullscreen; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                    <div class="portfolio-item-content">
+                        <h4>Scena 2</h4>
+                        <p>Opis sceny</p>
+                    </div>
+                </div>
+            </div>
+            <script src="https://player.vimeo.com/api/player.js"></script>
+        </div>
+        
+    </section>
+
+    <section id="selected-works" class="portfolio-section">
+        <h2 class="section-title">WYBRANE REALIZACJE</h2>
+        <div class="selected-works">
+            <!-- Pojedyncza realizacja -->
+            <div class="work-item">
+                <div class="work-preview">
+                    <iframe 
+                        src="https://player.vimeo.com/video/338844163?h=f54fb060de&badge=0&autopause=0&player_id=0&app_id=58479" 
+                        frameborder="0" 
+                        allow="autoplay; fullscreen; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="work-details">
+                    <h3>Tytuł projektu</h3>
+                    <span class="work-category">Film / Reklama</span>
+                    <p>Krótki opis projektu pokazujący szczegóły realizacji.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="reels" class="portfolio-section">
+        <h2 class="section-title">PRZYKŁADOWE ROLKI</h2>
+        <div class="reels-grid">
+            <!-- Pojedyncza rolka -->
+            <div class="reel-item">
+                <div class="reel-preview">
+                    <iframe 
+                        src="https://player.vimeo.com/video/819498537?h=ccaf048025&badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0" 
+                        frameborder="0" 
+                        allow="autoplay; fullscreen; picture-in-picture" 
+                        allowfullscreen
+                        style="width: 100%; height: 100%; border-radius: 15px;"
+                    >
+                    </iframe>
+                </div>
+                <div class="reel-details">
+                    <h4>Najlepszy Projekt</h4>
+                    <span class="reel-category">Film Promocyjny</span>
+                    <p>Dynamiczna produkcja reklamowa pokazująca najlepsze momenty</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Inicjalizacja GSAP ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Animacja parallax dla tła
+        gsap.to('.parallax-bg', {
+            y: '30%',
+            ease: 'none',
+            scrollTrigger: {
+                trigger: '.parallax-wrapper',
+                start: 'top top',
+                end: 'bottom top',
+                scrub: true
+            }
+        });
+
+        // Animacja tytułu przy wejściu na stronę
+        gsap.to('.hero-title', {
+            opacity: 1,
+            y: 0,
+            duration: 1.2,
+            ease: 'power3.out'
+        });
+
+        gsap.to('.hero-subtitle', {
+            opacity: 1,
+            y: 0,
+            duration: 1.2,
+            delay: 0.3,
+            ease: 'power3.out'
+        });
+
+        // Animacja elementów portfolio przy scrollowaniu
+        gsap.utils.toArray('.portfolio-item').forEach(item => {
+    if (!item.classList.contains('project-example')) { // Dodajemy ten warunek
+        gsap.to(item, {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            scrollTrigger: {
+                trigger: item,
+                start: 'top bottom-=100',
+                toggleActions: 'play none none reverse'
+            }
+        });
+    }
+});
+
+        // Płynne przewijanie do sekcji
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Hamburger Menu
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Zamykanie menu po kliknięciu w link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+        const workItems = document.querySelectorAll('.work-item');
+        
+        workItems.forEach(item => {
+            item.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                
+                workItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+                
+                this.classList.toggle('active');
+            });
+        });
+    }
+});
+    </script>
+</body><script type="module">
+    import * as THREE from 'https://unpkg.com/three@0.159.0/build/three.module.js';
+
+    const vertexShader = `
+        varying vec2 vUv;
+        void main() {
+            vUv = uv;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+    `;
+
+    const fragmentShader = `
+        uniform vec2 uMouse;
+        uniform float uTime;
+        varying vec2 vUv;
+
+        float random(vec2 st) {
+            return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
+        }
+
+        float smoothNoise(vec2 st) {
+            vec2 i = floor(st);
+            vec2 f = fract(st);
+            
+            float a = random(i);
+            float b = random(i + vec2(1.0, 0.0));
+            float c = random(i + vec2(0.0, 1.0));
+            float d = random(i + vec2(1.0, 1.0));
+
+            vec2 u = f * f * (3.0 - 2.0 * f);
+            return mix(a, b, u.x) +
+                    (c - a)* u.y * (1.0 - u.x) +
+                    (d - b) * u.x * u.y;
+        }
+
+        float fbm(vec2 x) {
+            float v = 0.0;
+            float a = 0.5;
+            vec2 shift = vec2(100.0);
+            mat2 rot = mat2(cos(0.5), sin(0.5), 
+                            -sin(0.5), cos(0.50));
+            for (int i = 0; i < 6; ++i) {
+                v += a * smoothNoise(x);
+                x = rot * x * 2.0 + shift;
+                a *= 0.5;
+            }
+            return v;
+        }
+
+        void main() {
+            vec2 uv = vUv;
+            vec2 mouse = uMouse * 0.05;
+            uv += mouse;
+            
+            float time = uTime * 0.1;
+            vec2 movement = vec2(time * 0.1, time * 0.05);
+            
+            vec2 q = vec2(0.0);
+            q.x = fbm(uv + movement);
+            q.y = fbm(uv + vec2(1.0));
+
+            vec2 r = vec2(0.0);
+            r.x = fbm(uv + 1.0 * q + vec2(1.7, 9.2) + 0.15 * time);
+            r.y = fbm(uv + 1.0 * q + vec2(8.3, 2.8) + 0.126 * time);
+
+            float f = fbm(uv + r);
+            
+             vec3 cloudColor = vec3(0.14, 0.12, 0.18);      // Ciemny kolor tła
+    vec3 accentColor = vec3(0.88, 0.53, 0.88);     // Różowy kolor (#e285e0)
+    
+    vec3 finalColor = mix(
+        cloudColor, 
+        accentColor, 
+        smoothstep(0.3, 0.8, f)
+    );
+    
+    float opacity = smoothstep(0.3, 0.8, f);
+    gl_FragColor = vec4(finalColor, opacity * 0.8);
+}
+    `;
+
+    class CloudEffect {
+        constructor() {
+            this.scene = new THREE.Scene();
+            this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+            this.renderer = new THREE.WebGLRenderer({
+                canvas: document.getElementById('clouds-canvas'),
+                alpha: true
+            });
+
+            this.mouse = new THREE.Vector2(0, 0);
+            this.time = 0;
+            this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+            this.init();
+            this.animate();
+            this.addEventListeners();
+        }
+
+        async init() {
+            const geometry = new THREE.PlaneGeometry(2, 2);
+            this.material = new THREE.ShaderMaterial({
+                uniforms: {
+                    uMouse: { value: this.mouse },
+                    uTime: { value: 0 }
+                },
+                vertexShader,
+                fragmentShader
+            });
+
+            const mesh = new THREE.Mesh(geometry, this.material);
+            this.scene.add(mesh);
+
+            this.resize();
+        }
+
+        addEventListeners() {
+            window.addEventListener('resize', this.resize.bind(this));
+            
+            if (this.isMobile) {
+                window.addEventListener('touchmove', this.onTouchMove.bind(this));
+                window.addEventListener('touchstart', this.onTouchMove.bind(this));
+            } else {
+                window.addEventListener('mousemove', this.onMouseMove.bind(this));
+            }
+        }
+
+        onMouseMove(event) {
+            this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        }
+
+        onTouchMove(event) {
+            const touch = event.touches[0];
+            this.mouse.x = (touch.clientX / window.innerWidth) * 2 - 1;
+            this.mouse.y = -(touch.clientY / window.innerHeight) * 2 + 1;
+        }
+
+        resize() {
+            const { innerWidth: width, innerHeight: height } = window;
+            this.renderer.setSize(width, height);
+        }
+
+        animate() {
+            requestAnimationFrame(this.animate.bind(this));
+            
+            const timeIncrement = this.isMobile ? 0.005 : 0.01;
+            this.time += timeIncrement;
+            
+            this.material.uniforms.uTime.value = this.time;
+            this.material.uniforms.uMouse.value = this.mouse;
+            
+            this.renderer.render(this.scene, this.camera);
+        }
+    }
+
+    // Initialize CloudEffect only for the hero section
+    new CloudEffect();
+    window.addEventListener('scroll', () => {
+    const scrollPosition = window.scrollY;
+    const overlay = document.querySelector('.overlay-scroll');
+    const opacity = Math.min(scrollPosition / window.innerHeight, 1);
+    overlay.style.opacity = opacity;
+});
+</script>
+</body>
+</html>
