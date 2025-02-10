@@ -20,6 +20,10 @@
             padding: 0;
             box-sizing: border-box;
         }
+        html, body {
+    overflow-x: hidden;
+    width: 100%;
+}
 
         body {
             font-family: 'Montserrat', sans-serif;
@@ -119,7 +123,7 @@
     position: relative;
     height: 100vh;
     overflow: hidden;
-    perspective: 2px;
+    transform-style: preserve-3d;
 }
 
         .parallax-bg {
@@ -206,29 +210,21 @@
 }
 
 @media (max-width: 768px) {
-    .major-project .project-examples {
-        grid-template-columns: 1fr;
-       gap: 20px;
-       width: 90%;
-       margin: 0 auto;
-       display: flex;
-       flex-direction: column;
-       align-items: center;
-   }
+    .major-project {
+        padding: 20px;
+        margin-bottom: 80px;
+    }
     
-   .major-project .project-example.portfolio-item {
-    position: relative;
-       border-radius: 15px;
-       overflow: visible;
-       margin-bottom: 120px;
-       width: 90%;
-   }
-   .major-project .project-example iframe {
-    width: 100%;
-       aspect-ratio: 1/1;
-       border-radius: 15px;
-       border: none;
-   }
+    .project-examples {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .project-example.portfolio-item {
+        min-height: 250px;
+        max-width: 100%;
+        margin: 0 auto;
+    }
     
     .portfolio-section {
         padding: 60px 15px;
@@ -275,12 +271,11 @@
         .project-examples {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    gap: 30px;
     margin-top: 40px;
-    padding: 0 20px;
 }
 
-        .project-example.portfolio-item {
+.project-example.portfolio-item {
     position: relative;
     border-radius: 10px;
     overflow: hidden;
@@ -288,16 +283,7 @@
     min-height: 200px;
     transform: translateY(0);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-   
 }
-.project-example.portfolio-item iframe {
-       position: absolute;
-       top: 0;
-       left: 0;
-       width: 100%;
-       height: 100%;
-       border: none;
-   }
 
 .project-example.portfolio-item:hover {
     transform: translateY(-5px);
@@ -437,11 +423,12 @@
 }
 
 #clouds-canvas {
-    height: 100vh;
-    pointer-events: none;
-    position: fixed;
-    top: 0;
+    position: absolute;
+    top: auto;
+    bottom: 0;
     left: 0;
+    width: 100%;
+    height: 100%;
     z-index: 1;
 }
 
@@ -477,14 +464,13 @@
         z-index: 2;
     }
 
-    /* Kopiujemy dokładnie te same style co przy hover, tylko zmieniamy hover na active */
     .work-details {
         position: absolute;
         top: 100%;
         left: 0;
         right: 0;
         width: 100%;
-        padding: 45px 30px;
+        padding: 35px 15px 12px 15px;
         background: linear-gradient(
             to bottom,
             rgba(37, 37, 37, 0.98) 0%,
@@ -499,37 +485,33 @@
         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
         border: 1px solid rgba(226, 133, 224, 0.1);
         border-top: none;
-        padding-bottom: 25px; /* Dodajemy więcej miejsca na dole */
-        border-radius: 0 0 15px 15px; /* Upewniamy się, że zaokrąglenie jest widoczne */
+        padding-bottom: 25px;
+        border-radius: 0 0 15px 15px;
+    }
+
+    .work-details h3 {
+        font-size: 1.1rem !important;
+        margin-bottom: 6px !important;
+        line-height: 1.2;
+    }
+
+    .work-category {
+        font-size: 0.8rem !important;
+        margin-bottom: 6px !important;
+        padding: 2px 8px;
+        line-height: 1.2;
+    }
+
+    .work-details p {
+        font-size: 0.75rem !important;
+        line-height: 1.4;
+        margin: 4px 0;
+        padding: 0;
     }
 
     .work-item.active .work-details {
         opacity: 1;
         transform: translateY(0);
-    }
-
-    .work-details {
-        padding: 50px 15px 12px 15px
-    }
-
-    .work-details h3 {
-        font-size: 1rem !important;    /* większa czcionka */
-        margin-bottom: 8px !important;  /* większy odstęp */
-        line-height: 1.3;    /* większa wysokość linii */
-    }
-
-    .work-category {
-        font-size: 0.8rem !important;   /* większa czcionka */
-        margin-bottom: 6px !important;  /* większy odstęp */
-        padding: 2px 8px;    /* większy padding */
-        line-height: 1.2;    /* większa wysokość linii */
-    }
-
-    .work-details p {
-        font-size: 0.75rem !important;   /* większa czcionka */
-        line-height: 1.4;    /* większa wysokość linii */
-        margin: 4px 0;       /* dodany margines */
-        padding: 0;          /* bez paddingu */
     }
 
     .work-item.active .work-details h3,
@@ -631,27 +613,15 @@
 
         /* Dla Większe Projekty */
         .portfolio-item-content {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        width: 100%;
-        padding: 45px 30px;
-        background: linear-gradient(
-            to bottom,
-            rgba(37, 37, 37, 0.98) 0%,
-            rgba(37, 37, 37, 0.95) 100%
-        );
-        backdrop-filter: blur(10px);
-        border-radius: 0 0 15px 15px;
-        transform: translateY(-15%);
-        opacity: 0;
-        z-index: 1;
-        transition: all 0.5s cubic-bezier(0.33, 1, 0.68, 1);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-        border: 1px solid rgba(226, 133, 224, 0.1);
-        border-top: none;
-    }
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    background: linear-gradient(rgba(0,0,0,0.9), transparent);
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+}
 
 .portfolio-item:hover .portfolio-item-content {
     transform: translateY(0);
@@ -831,22 +801,6 @@
     border-top: none;
 }
 
-/* Hover Effects */
-.reel-item:hover {
-    transform: translateY(-5px);
-}
-
-.reel-item:hover .reel-preview img,
-.reel-item:hover .reel-preview video {
-    transform: scale(1.05);
-}
-
-.reel-item:hover .reel-details {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Content Styling */
 .reel-details h4 {
     color: #fff;
     font-size: 1.5rem;
@@ -942,19 +896,124 @@
         padding: 0 20px;
         margin: 0 20px;
     }
+
     .reel-item {
         margin-bottom: 120px;
     }
 
     .reel-details {
-        padding: 50px 15px 12px 15px;
+        position: absolute;
+        top: 100%; /* Zmieniona pozycja top */
+        padding: 45px 30px; /* Dostosowany padding */
+        transform: translateY(-15%);
+        margin-top: -15px;
+        padding-bottom: 25px;
     }
+
+    .reel-details h4 {
+        font-size: 1.1rem !important;
+        margin-bottom: 6px !important;
+        line-height: 1.2;
+    }
+
+    .reel-category {
+        font-size: 0.8rem !important;
+        margin-bottom: 6px !important;
+        padding: 2px 8px;
+        line-height: 1.2;
+    }
+
+    .reel-details p {
+        font-size: 0.75rem !important;
+        line-height: 1.4;
+        margin: 4px 0;
+        padding: 0;
+    }
+}
+
+/* Efekty hover */
+.reel-item:hover .reel-details {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.reel-item:hover .reel-details h4,
+.reel-item:hover .reel-details .reel-category,
+.reel-item:hover .reel-details p {
+    transform: translateY(0);
+    opacity: 1;
 }
 
 @media (max-width: 480px) {
     .reels-grid {
         grid-template-columns: repeat(1, 1fr);
     }
+}
+/* MacBook-specific optimizations */
+@media screen and (min-aspect-ratio: 16/9) {
+            .parallax-wrapper {
+                height: 100vh;
+                min-height: 600px;
+            }
+
+            .hero-content {
+                padding-top: 0;
+            }
+
+            .work-preview {
+                max-height: 60vh;
+            }
+        }
+
+        /* Specific MacBook Pro resolutions */
+        @media screen and (min-width: 1280px) and (max-width: 1440px) and (min-height: 800px) and (max-height: 900px) {
+            .selected-works {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .reels-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .portfolio-section {
+                padding: 80px 3vw;
+            }
+        }
+
+        /* Mobile optimizations */
+        @media screen and (max-width: 768px) {
+            .hero-content {
+                padding-top: 80px;
+            }
+
+            .selected-works, .reels-grid {
+                grid-template-columns: 1fr;
+                padding: 0 15px;
+            }
+
+            .work-item, .reel-item {
+                margin-bottom: 60px;
+            }
+        }
+        .portfolio-item {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+.work-preview, .reel-preview {
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+#clouds-canvas {
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+.parallax-wrapper {
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
     </style>
 </head>
@@ -1126,16 +1185,21 @@
 
         // Animacja elementów portfolio przy scrollowaniu
         gsap.utils.toArray('.portfolio-item').forEach(item => {
-    if (!item.classList.contains('project-example')) { // Dodajemy ten warunek
-        gsap.to(item, {
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            scrollTrigger: {
-                trigger: item,
-                start: 'top bottom-=100',
-                toggleActions: 'play none none reverse'
-            }
+    if (!item.classList.contains('project-example')) {
+        gsap.set(item, { opacity: 0, y: 50 }); // Ustaw początkowy stan
+        ScrollTrigger.create({
+            trigger: item,
+            start: 'top bottom-=100',
+            onEnter: () => {
+                gsap.to(item, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1,
+                    ease: 'power2.out',
+                    overwrite: true
+                });
+            },
+            once: true // Animacja wykona się tylko raz
         });
     }
 });
