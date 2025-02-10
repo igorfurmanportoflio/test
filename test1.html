@@ -20,11 +20,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-        html, body {
-    overflow-x: hidden;
-    width: 100%;
-}
-
+       
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: var(--primary-color);
@@ -994,6 +990,26 @@
                 margin-bottom: 60px;
             }
         }
+        .portfolio-item {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+.work-preview, .reel-preview {
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+#clouds-canvas {
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+.parallax-wrapper {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
     </style>
 </head>
 <body>
@@ -1164,16 +1180,21 @@
 
         // Animacja elementów portfolio przy scrollowaniu
         gsap.utils.toArray('.portfolio-item').forEach(item => {
-    if (!item.classList.contains('project-example')) { // Dodajemy ten warunek
-        gsap.to(item, {
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            scrollTrigger: {
-                trigger: item,
-                start: 'top bottom-=100',
-                toggleActions: 'play none none reverse'
-            }
+    if (!item.classList.contains('project-example')) {
+        gsap.set(item, { opacity: 0, y: 50 }); // Ustaw początkowy stan
+        ScrollTrigger.create({
+            trigger: item,
+            start: 'top bottom-=100',
+            onEnter: () => {
+                gsap.to(item, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1,
+                    ease: 'power2.out',
+                    overwrite: true
+                });
+            },
+            once: true // Animacja wykona się tylko raz
         });
     }
 });
