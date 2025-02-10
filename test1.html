@@ -212,19 +212,22 @@
     }
     
     .project-examples {
-        grid-template-columns: 1fr;
-        gap: 30px;
-        padding: 0 15px;
-    }
+       grid-template-columns: 1fr;
+       gap: 30px;
+       padding: 0 15px;
+       max-width: 90%;
+       margin: 30px auto;
+   }
 
-    .project-example.portfolio-item {
-        aspect-ratio: 16/9;
-        min-height: 200px;
-    }
+   .project-example.portfolio-item {
+       aspect-ratio: 16/9;
+       min-height: 200px;
+       width: 100%;
+   }
     
-    .portfolio-section {
-        padding: 60px 15px;
-    }
+   .portfolio-section {
+       overflow: hidden;
+   }
 }
 
         .major-project-header {
