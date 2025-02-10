@@ -263,6 +263,13 @@
     transform: translateY(0);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+.project-example.portfolio-item iframe {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    border: none;
+    object-fit: cover;
+}
 
 .project-example.portfolio-item:hover {
     transform: translateY(-5px);
@@ -994,15 +1001,10 @@
             <div class="project-examples">
                 <div class="project-example portfolio-item">        
                     <iframe 
-                        src="https://player.vimeo.com/video/338844163?h=f54fb060de&badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0&controls=1&background=0&transparent=0&responsive=1&controls=1&dnt=1&playsinline=1" 
-                        style="width: 100%; height: 100%; border-radius: 10px; background: #000;"
+                        src="https://player.vimeo.com/video/338844163?h=f54fb060de&badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0" 
                         frameborder="0" 
                         allow="autoplay; fullscreen; picture-in-picture" 
-                        allowfullscreen
-                        playsinline
-                        webkitplaysinline
-                        webkitallowfullscreen 
-                        mozallowfullscreen>
+                        allowfullscreen>
                     </iframe>
                     <div class="portfolio-item-content">
                         <h4>Scena 1</h4>
