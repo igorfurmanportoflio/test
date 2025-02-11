@@ -232,13 +232,14 @@
 }
     .project-example.portfolio-item iframe {
         position: absolute;
-    top: 0;
-    left: 0;
-    width: 100% !important;
-    height: 100% !important;
-    border: none;
-    border-radius: 15px;
-    display: block;
+        top: 50%;
+        left: 50%;
+        width: 350% !important;
+        height: 350% !important;
+        transform: translate(-50%, -50%) scale(0.35);
+        border: none;
+        border-radius: 15px;
+        pointer-events: none;
     }
            
         
@@ -1120,7 +1121,7 @@
             <div class="work-item">
                 <div class="work-preview">
                     <iframe 
-                        src="https://player.vimeo.com/video/338844163?h=f54fb060de&badge=0&autopause=0&player_id=0&app_id=58479" 
+                        src="https://player.vimeo.com/video/338844163?h=f54fb060de&transparent=0&background_mode=fill&badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0&show_sidedock=0" 
                         frameborder="0" 
                         allow="autoplay; fullscreen; picture-in-picture" 
                         allowfullscreen>
