@@ -216,22 +216,22 @@
     }
     .project-example.portfolio-item iframe {
         position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    transform: translate(-50%, -50%);
     border: none;
-    }
+    object-fit: cover;
+}
     
     .project-example.portfolio-item {
-        position: relative;
-        width: 100%;
         aspect-ratio: 16/9;
-        border-radius: 15px;
-        overflow: hidden;
-        background: var(--secondary-color);
-    }
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 15px;
+    background: var(--secondary-color);
+}
     
     .portfolio-section {
         padding: 60px 15px;
