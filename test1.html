@@ -227,12 +227,14 @@
 }
     
     .project-example.portfolio-item {
+        position: relative;
+        border-radius: 10px;
+        overflow: hidden;
         aspect-ratio: 16/9;
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    border-radius: 15px;
-    background: var(--secondary-color);
+        min-height: 200px;
+        transform: translateY(0);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        width: 100%;
 }
     
     .portfolio-section {
@@ -281,10 +283,12 @@
     position: absolute;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 100%;
+        width: 100% !important;
+        height: 100% !important;
         border: none;
         object-fit: cover;
+        min-width: 100%;
+        min-height: 100%;
 }
 
 .project-example.portfolio-item:hover {
