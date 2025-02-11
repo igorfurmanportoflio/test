@@ -216,25 +216,22 @@
     }
     .project-example.portfolio-item iframe {
         position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
-    border-radius: 12px;
-    transform: scale(1.01); /* Lekko przybliżamy film, aby ukryć krawędzie */
-    object-fit: cover;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+        border-radius: 12px;
 }
     
     .project-example.portfolio-item {
         position: relative;
-        border-radius: 10px;
-        overflow: hidden;
-        aspect-ratio: 16/9;
-        min-height: 200px;
-        transform: translateY(0);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
         width: 100%;
+        padding-top: 56.25%; /* To wymusi proporcje 16:9 */
+        height: 0;
+        overflow: hidden;
 }
     
     .portfolio-section {
