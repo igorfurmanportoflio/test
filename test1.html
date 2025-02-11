@@ -222,8 +222,14 @@
         height: 100%;
         border-radius: 15px;
         border: none;
-        transform: scale(1.075)
-}
+        transform: scale(1.075);
+        transform-origin: center center;
+        }
+        .project-example.portfolio-item iframe::-webkit-media-controls-panel,
+    .project-example.portfolio-item iframe::-webkit-media-controls {
+        transform: scale(0.935); /* To zrównoważy przybliżenie filmu */
+        transform-origin: center bottom;
+    }
     
     .project-example.portfolio-item {
         position: relative;
