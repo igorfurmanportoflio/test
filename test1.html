@@ -13,6 +13,7 @@
             --accent-color: #e285e0;
             --text-color: #ffffff;
             --secondary-color: #333333;
+            --footer-bg-image: url('https://e0.pxfuel.com/wallpapers/855/125/desktop-wallpaper-black-and-white-forest-background-for-dark-forest-computer.jpg');
         }
 
         * {
@@ -1062,7 +1063,7 @@
     border-radius: 10px;
     margin-bottom: 20px;
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .faq-question {
@@ -1081,19 +1082,20 @@
 .faq-toggle {
     font-size: 1.5rem;
     color: var(--accent-color);
-    transition: transform 0.3s ease;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .faq-answer {
-    padding: 0 20px;
-    max-height: 0;
-    overflow: hidden;
-    transition: all 0.3s ease;
+    padding: 0;
+    height: 0;
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .faq-item.active .faq-answer {
-    padding: 20px;
-    max-height: 1000px;
+    padding: 0 20px 20px 20px;
+    height: auto;
+    opacity: 1;
 }
 
 .faq-item.active .faq-toggle {
@@ -1182,10 +1184,14 @@
 .footer {
     position: relative;
     padding: 40px 0 20px;
-    background: rgba(37, 37, 37, 0.7);
     overflow: hidden;
     margin-top: 0px;
-    min-height: 300px; /* dodajemy minimalną wysokość */
+    min-height: 400px;
+    background: linear-gradient(rgba(37, 37, 37, 0.8), rgba(226, 133, 224, 0.2)), 
+                var(--footer-bg-image);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%
 }
 .footer-wave {
     position: absolute;
@@ -1526,8 +1532,7 @@
                         </div>
                         <div class="contact-social">
                             <a href="#" class="social-link">Instagram</a>
-                            <a href="#" class="social-link">Vimeo</a>
-                            <a href="#" class="social-link">LinkedIn</a>
+                            <a href="#" class="social-link">Facebook</a>
                         </div>
                     </div>
                 </div>
