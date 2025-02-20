@@ -1349,9 +1349,17 @@
         height: 400px;
     }
     
+    .nav-links {
+        display: flex;
+        justify-content: center; /* Wyśrodkowanie menu */
+        align-items: center;
+        gap: 50px; /* Większa przestrzeń między linkami */
+    }
+
     .nav-links a {
-        font-size: 1.3rem;
-        padding: 0 15px;
+        font-size: 1.2rem; /* Utrzymanie dobrej wielkości czcionki */
+        text-align: center; /* Dodatkowe centrowanie tekstu */
+        padding: 10px 15px; /* Większy padding dla lepszego wyglądu */
     }
     
     .hero-title {
@@ -1369,10 +1377,7 @@
     padding: 30px;
 }
 
-/* Zwiększenie przycisków menu */
-.nav-links a {
-    padding: 10px 20px;
-}
+
 
 /* Poprawa responsywności dla rolki */
 @media (min-width: 1440px) {
