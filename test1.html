@@ -1330,6 +1330,65 @@
         font-size: 1rem;
     }
 }
+/* Poprawki dla MacBook Pro i ekranów o wysokiej rozdzielczości */
+@media (min-width: 1440px) {
+    .selected-works {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 50px;
+    }
+    
+    .work-item {
+        margin-bottom: 120px;
+    }
+
+    .work-details {
+        font-size: 1.2rem;
+    }
+    
+    .work-preview iframe {
+        height: 400px;
+    }
+    
+    .nav-links a {
+        font-size: 1.3rem;
+        padding: 0 15px;
+    }
+    
+    .hero-title {
+        font-size: 6rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 2rem;
+    }
+}
+
+/* Poprawki dla wysuwanych paneli */
+.work-details, .reel-details {
+    font-size: 1.1rem;
+    padding: 30px;
+}
+
+/* Zwiększenie przycisków menu */
+.nav-links a {
+    padding: 10px 20px;
+}
+
+/* Poprawa responsywności dla rolki */
+@media (min-width: 1440px) {
+    .reels-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .reel-item {
+        margin-bottom: 100px;
+    }
+    
+    .reel-preview img, .reel-preview video {
+        height: 450px;
+    }
+}
+
     </style>
 </head>
 <body>
